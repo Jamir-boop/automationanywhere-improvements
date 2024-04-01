@@ -8,7 +8,7 @@
 // @icon         https://cmpc-1dev.my.automationanywhere.digital/favicon.ico
 // @grant        none
 // @license      MIT
-// @require      https://raw.githubusercontent.com/Jamir-boop/AutomationAnywhere_CommandPalette/main/snippets.js?323ae4e
+// @require      https://raw.githubusercontent.com/Jamir-boop/automationanywhere-improvements/main/snippets.js?bd78a4a
 // ==/UserScript==
 
 (function () {

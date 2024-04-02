@@ -255,7 +255,20 @@ normalFontSize = .75rem
 
 		.editor-palette__accordion
 			flex-basis: 0px !important
+			transition none
+		.editor-palette span.editor-palette-section__header-title
+			color white
 	
+		.editor-palette-section__header		
+			height 0px !important
+		.editor-palette-section__header-inner
+			height 12px !important
+			
+		.editor-palette-section__scroller--variant_search
+			margin-top -30px !important
+		.editor-palette-section__scroller-top
+			background transparent !important
+			
 	if pathFinder
 		.pathfinder, .main-layout__navigation
 			display:none

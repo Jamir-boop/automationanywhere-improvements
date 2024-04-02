@@ -754,28 +754,32 @@
 		}
 	}
 
-    function executeStartFunctionsRepeatedly() {
-        let count = 0;
-        const intervalId = setInterval(() => {
-            insertCommandPalette();
-            insertCustomButtons();
+	function executeStartFunctionsRepeatedly() {
+		let count = 0;
+		const intervalId = setInterval(() => {
+			insertCommandPalette();
+			insertCustomButtons();
+			setInterval(function () {
+				updateActiveButton();
+			}, 1000);
 
-            count++;
-            if (count >= 3) {
-                clearInterval(intervalId);
-            }
-        }, 5000); // Execute every 5 seconds
-    }
+			count++;
+			if (count >= 3) {
+				clearInterval(intervalId);
+			}
+		}, 5000); // Execute every 5 seconds
+	}
 
-    if (document.readyState === 'loading') {
-        // The document is still loading, wait for DOMContentLoaded
-        document.addEventListener("DOMContentLoaded", executeStartFunctionsRepeatedly);
-    } else {
-        // The `DOMContentLoaded` event has already fired, execute immediately
-        executeStartFunctionsRepeatedly();
-    }
-
-
+	if (document.readyState === "loading") {
+		// The document is still loading, wait for DOMContentLoaded
+		document.addEventListener(
+			"DOMContentLoaded",
+			executeStartFunctionsRepeatedly,
+		);
+	} else {
+		// The `DOMContentLoaded` event has already fired, execute immediately
+		executeStartFunctionsRepeatedly();
+	}
 
 	let lastHref = document.location.href;
 	setInterval(function () {
@@ -791,6 +795,22 @@
 	//============ Feat insert command palette END ============
 	//============ Feat custom selector Variables/Actions/Triggers START============
 
+	// Define updateActiveButton in the outer scope
+	function updateActiveButton() {
+		const activeSection = document.querySelector(
+			".editor-palette-section__header--is_active .clipped-text__string--for_presentation",
+		)?.innerText;
+		const buttons = document.querySelectorAll(".customActionVariableButton");
+
+		buttons.forEach((button) => {
+			if (button.textContent === activeSection) {
+				button.classList.add("buttonToolbarActive");
+			} else {
+				button.classList.remove("buttonToolbarActive");
+			}
+		});
+	}
+
 	function insertCustomButtons() {
 		if (document.getElementById("customActionVariableButtons")) {
 			console.log("Custom buttons already added.");
@@ -803,17 +823,26 @@
 		const variableButton = document.createElement("button");
 		variableButton.className = "customActionVariableButton";
 		variableButton.textContent = "Variables";
-		variableButton.onclick = showVariables;
+		variableButton.onclick = function () {
+			showVariables();
+			updateActiveButton();
+		};
 
 		const actionButton = document.createElement("button");
 		actionButton.className = "customActionVariableButton";
 		actionButton.textContent = "Actions";
-		actionButton.onclick = addAction;
+		actionButton.onclick = function () {
+			addAction();
+			updateActiveButton();
+		};
 
 		const triggerButton = document.createElement("button");
 		triggerButton.className = "customActionVariableButton";
 		triggerButton.textContent = "Triggers";
-		triggerButton.onclick = showTriggers;
+		triggerButton.onclick = function () {
+			showTriggers();
+			updateActiveButton();
+		};
 
 		containerDiv.appendChild(actionButton);
 		containerDiv.appendChild(variableButton);
@@ -837,11 +866,12 @@
         }
         #customActionVariableButtons button {
             all: unset;
-            font-size: .75rem;
-            font-weight: bold;
+            font-size: .85rem;
+            font-weight: 300;
             cursor: pointer;
             margin: 4px;
             border-radius: 5px;
+            border-bottom: 3px solid transparent;
             background-color: transparent;
             color: black;
             flex-grow: 1;
@@ -850,6 +880,9 @@
         }
         #customActionVariableButtons button:hover {
             background-color: #dae9f3;
+        }
+        .buttonToolbarActive {
+            background-color: #dae9f3 !important;
         }
         .editor-palette.g-box-sizing_border-box {
             margin-top: 38px;

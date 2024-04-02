@@ -832,7 +832,7 @@
         #customActionVariableButtons {
             display: flex;
             width: 100%;
-            height: 35px !important;
+            height: 38px !important;
             background: white;
         }
         #customActionVariableButtons button {
@@ -840,7 +840,7 @@
             font-size: .75rem;
             font-weight: bold;
             cursor: pointer;
-            padding: 4px;
+            margin: 4px;
             border-radius: 5px;
             background-color: transparent;
             color: black;
@@ -852,7 +852,7 @@
             background-color: #dae9f3;
         }
         .editor-palette.g-box-sizing_border-box {
-            margin-top: 35px;
+            margin-top: 38px;
         }
     `;
 		document.head.appendChild(style);

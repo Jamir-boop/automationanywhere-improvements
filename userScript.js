@@ -663,13 +663,13 @@
             }
 
             #commandInput,
-            #commandInput:focus,
+            #commandInput:focus-visible,
             #commandInput:active {
                 unset: all;
                 padding: 10px;
                 width: 93%;
                 margin-bottom: 10px;
-                border: 2px solid #ccc;
+                border: 2px solid transparent;
                 border-radius: 5px;
             }
 

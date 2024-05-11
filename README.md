@@ -8,11 +8,18 @@
 This is a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), both designed to work together (the `aa.user.styl` file can work alone). They enhance the Automation Anywhere platform by providing an improved user interface (UI) and a set of features accessible through a command palette. The `userScript.js` file is a script that runs in the Tampermonkey extension, while the `aa.user.styl` file runs within the Stylus extension.
 
 ## Why are there two damn separate files with different extensions?
-I'm aware that the presence of multiple files across different formats may seem unnecessary and potentially confusing.
-This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
+I'm aware that the presence of two files across different formats may seem unnecessary and potentially confusing.
+This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.p
 
 ## Features
 ### aa.user.styl
+<img src="https://i.ibb.co/W2bxLKX/image.png" alt="image" border="0">
+- Converts input fields that have a horizontal scroll into text areas that break words, allowing you to view all contents at a glance.
+<img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0">
+- Redesigns the annoying buttons for selecting actions and variables.
+- Increases the font size and assigns Cascadia Code and Cursive Cascadia Code to key parts of the UI.
+- Adds a colorful background.
+- Much more...
 
 ### userScript.js
 The script adds a command palette to Automation Anywhere, which can be invoked using the `Alt + P` key combination. The command palette provides a set of commands that can be used to perform various actions on the Automation Anywhere platform. The commands include:
@@ -24,6 +31,7 @@ The script adds a command palette to Automation Anywhere, which can be invoked u
 - `hd`, `hide dialog`, `close dialog`: Hides the dialog that appears when a bot is running.
 - `up`, `updatepkgs`, `upgrade packages`: Updates all packages.
 - `fa`, `fold all`, `collapse all`: Folds all sections in the code.
+- `p`, `private`, `private bots`: Redirects to the private bots folder.
 - `help`, `h`, `show help`: Displays help information for available commands.
 
 If an invalid command is entered, a help message is displayed with a list of valid commands.

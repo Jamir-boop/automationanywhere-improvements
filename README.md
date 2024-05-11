@@ -47,7 +47,7 @@ This decision was made considering the fact that there's no need to reinvent the
 ## Installation
 These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), designed to function either together or independently. The `userScript.js` operates within the Tampermonkey extension, whereas the `aa.user.styl` is executed through the Stylus extension.
 
-###Considerations
+### Considerations
 - Ensure the control room is set to English to maintain the correct functionality of script selectors.
 - Optionally, consider installing the [Casacadia Code](https://github.com/microsoft/cascadia-code) font on your system.
 

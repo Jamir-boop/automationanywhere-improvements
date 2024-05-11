@@ -5,14 +5,7 @@
 </div>
 
 #### Working on AutomationAnywhere Control Room 31.0.0 and 32.0.0
-
-This is a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), both designed to work together (the `aa.user.styl` file can work alone). They enhance the Automation Anywhere platform by providing an improved user interface (UI) and a set of features accessible through a command palette. The `userScript.js` file is a script that runs in the Tampermonkey extension, while the `aa.user.styl` file runs within the Stylus extension.
-
-## Why are there two separate files with different extensions?
-
-I'm aware that the presence of two files across different formats may seem unnecessary and potentially confusing.
-
-This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
+Improvements to enhance the Automation Anywhere development platform include an upgraded user interface and a suite of features accessible via a command palette, along with fixes for several annoyances.
 
 ## Features
 
@@ -45,9 +38,16 @@ The script adds a command palette to Automation Anywhere, which can be invoked u
 
 If an invalid command is entered, a help message is displayed with a list of valid commands.
 
-## Installation
+## Why are there two separate files with different extensions?
 
-It's important to note that:
+I'm aware that the presence of two files across different formats may seem unnecessary and potentially confusing.
+
+This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
+
+## Installation
+These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), designed to function either together or independently. The `userScript.js` operates within the Tampermonkey extension, whereas the `aa.user.styl` is executed through the Stylus extension.
+
+Before starting if you only want the
 
 1. Install the Tampermonkey extension on your browser.
 2. Click on the Tampermonkey icon and select "Create a new script".

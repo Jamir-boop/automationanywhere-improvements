@@ -31,7 +31,7 @@ This decision was made considering the fact that there's no need to reinvent the
 ### userScript.js
 <div align="center">
   <video autoplay loop muted>
-    <source src="https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/d3f31b5a-9062-4269-8e33-b78d2613babb" type="video/mp4">
+    <source src="https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/f7c6eec2-409f-495d-88e3-028e5b6d4593" type="video/mp4">
   </video>
 </div>
 

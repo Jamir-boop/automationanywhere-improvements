@@ -23,6 +23,7 @@ This decision was made considering the fact that there's no need to reinvent the
 <img src="https://i.ibb.co/fx0RDqk/input-to-areatext.png" alt="input-to-areatext" border="0" width="60%">
 - Redesigned the annoying buttons for selecting actions, variables, and triggers.
 <img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0" width="60%">
+
 - Increases the font size and assigns Cascadia Code and Cursive Cascadia Code to key parts of the UI.
 - Adds a colorful background.
 - And much more...

@@ -1,7 +1,7 @@
 # Better AutomationAnywhere
 <div align="center">
   <img src="https://i.ibb.co/bFN6g2j/aa-preview.png" alt="aa-preview" border="0">
-<div>
+</div>
 
 #### Working on AutomationAnywhere Control Room 31.0.0 and 32.0.0
 

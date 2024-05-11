@@ -1,12 +1,13 @@
 // ==UserScript==
-// @name         Command Palette AutomationAnywhere
+// @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.2.0
 // @description  Enhanced Automation Anywhere developer experience
 // @author       jamir-boop
-// @match        *://*.my.automationanywhere.digital/*
+// @match        *://*.automationanywhere.digital/*
 // @icon         https://cmpc-1dev.my.automationanywhere.digital/favicon.ico
-// @grant        none
+// @grant        GM_setValue
+// @grant    	 GM_getValue
 // @license      MIT
 // @require      https://raw.githubusercontent.com/Jamir-boop/automationanywhere-improvements/main/snippets.js?bd78a4a
 // ==/UserScript==
@@ -237,11 +238,12 @@
 		});
 	}
 
-	// Toggle command palette visibility with Ctrl+P
+	// Toggle command palette visibility with Shift+C
 	document.addEventListener("keydown", function (e) {
-		if (e.ctrlKey && e.key === "p") {
+		if (e.altKey && e.key === "p") {
 			e.preventDefault();
 			//insertCommandPalette();
+			insertCustomEditorPaletteButtons();
 			togglePaletteVisibility();
 		}
 	});
@@ -265,17 +267,41 @@
 	document.addEventListener("keydown", function (e) {
 		if (e.ctrlKey && e.code === "KeyD") {
 			(function () {
-				document
-					.querySelector(
-						"div.editor-layout__resize:nth-child(2) > button:nth-child(2)",
-					)
-					.click();
+				toogleToolbar();
 			})();
 			e.preventDefault();
 		}
 	});
 
+	// Function to toggle toolbar
+	function toogleToolbar() {
+		document
+			.querySelector(
+				"div.editor-layout__resize:nth-child(2) > button:nth-child(2)",
+			)
+			.click();
+	}
+
+	// Function to check if toolbar is opened
+	function checkPaletteState() {
+		let paletteElement = document.querySelector(".editor-layout__palette");
+		let width = paletteElement.offsetWidth; // Get the actual width
+
+		if (width <= 8) {
+			return "closed";
+		} else {
+			return "opened";
+		}
+	}
+
+	// Features
 	function addAction() {
+		const state = checkPaletteState();
+
+		if (state === "closed") {
+			toogleToolbar(); // Open the toolbar if it's closed
+		}
+
 		try {
 			document
 				.querySelector(
@@ -293,6 +319,12 @@
 	}
 
 	function addVariable() {
+		const state = checkPaletteState();
+
+		if (state === "closed") {
+			toogleToolbar(); // Open the toolbar if it's closed
+		}
+
 		try {
 			const accordion = document.querySelector(
 				"div.editor-palette__accordion:nth-child(1)",
@@ -324,6 +356,11 @@
 	}
 
 	function showVariables() {
+		const state = checkPaletteState();
+
+		if (state === "closed") {
+			toogleToolbar(); // Open the toolbar if it's closed
+		}
 		document
 			.querySelector(
 				'span.clipped-text.clipped-text--no_wrap.editor-palette-section__header-title[title="Variables"]',
@@ -332,6 +369,11 @@
 	}
 
 	function showTriggers() {
+		const state = checkPaletteState();
+
+		if (state === "closed") {
+			toogleToolbar(); // Open the toolbar if it's closed
+		}
 		document
 			.querySelector(
 				'span.clipped-text.clipped-text--no_wrap.editor-palette-section__header-title[title="Triggers"]',
@@ -340,6 +382,11 @@
 	}
 
 	function deleteUnusedVariables() {
+		const state = checkPaletteState();
+
+		if (state === "closed") {
+			toogleToolbar(); // Open the toolbar if it's closed
+		}
 		const accordion = document.querySelector(
 			"div.editor-palette__accordion:nth-child(1)",
 		);
@@ -605,7 +652,6 @@
 
 			localStorage.setItem("globalClipboard", data);
 			localStorage.setItem("globalClipboardUid", `"${emojiUid}"`);
-			console.log({ data });
 		} else {
 			console.log(`Node with nodeName ${key} not found.`);
 		}
@@ -616,183 +662,6 @@
 	}
 
 	//============ Feat snippets END ============
-	//============ Feat insert command palette START ============
-	// Insterts the command palette
-	function insertCommandPalette(retryCount = 0) {
-		// Check if the palette was already inserted
-		if (document.querySelector("#commandPalette")) {
-			console.log("Command palette already inserted.");
-			return;
-		}
-
-		// Create the container div and set its inner HTML
-		const containerDiv = document.createElement("div");
-		containerDiv.id = "commandPalette";
-		containerDiv.className = "command_palette--hidden";
-		containerDiv.innerHTML = `
-            <input type="text" id="commandInput" placeholder="Enter command...">
-            <div id="commandPredictions" class="command_predictions"></div>
-        `;
-
-		// Append the container div to the body
-		document.body.appendChild(containerDiv);
-
-		// Create and insert CSS
-		const css = `
-            #commandPalette * {
-                font-size: 1.15rem;
-                font-family: "CaskaydiaCove NF";
-            }
-
-            #commandPalette {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: white;
-                border-radius: 10px 10px 0 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                min-width: 30vw;
-                max-width: 80vw;
-                width: 600px;
-                z-index: 99999;
-
-                box-shadow: 0px 0px 0px 5000px #00000054;
-            }
-
-            #commandInput,
-            #commandInput:focus-visible,
-            #commandInput:active {
-                unset: all;
-                padding: 10px;
-                width: 93%;
-                margin-bottom: 10px;
-                border: 2px solid transparent;
-                border-radius: 5px;
-            }
-
-            #commandPalette:focus,
-            #commandPalette:active {
-                border-color: orange;
-            }
-
-            #commandPredictions {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: white;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                border-radius: 0 0 10px 10px;
-                max-height: 200px;
-                overflow-y: auto;
-                z-index: 100000;
-            }
-
-            .command_prediction-item.active {
-                background-color: #f0f0f0;
-            }
-
-            .command_prediction-item strong {
-                font-weight: bold;
-            }
-
-            .command_prediction-item {
-                padding: 8px;
-                cursor: pointer;
-                border-bottom: 1px solid #eee;
-            }
-
-            .command_prediction-item:hover,
-            .command_prediction-item.active {
-                background-color: #f0f0f0;
-            }
-
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
-                to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            }
-
-            @keyframes fadeOut {
-                from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-                to { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
-            }
-
-            .command_palette--visible {
-                display: block;
-                animation: fadeIn 0.25s ease-out forwards;
-            }
-
-            .command_palette--hidden {
-                animation: fadeOut 0.25s ease-out forwards;
-                display: none;
-                pointer-events: none;
-                opacity: 0;
-                z-index: -1;
-            }
-        `;
-
-		const style = document.createElement("style");
-		style.type = "text/css";
-		style.appendChild(document.createTextNode(css));
-		document.head.appendChild(style);
-
-		setupCommandInputEventListeners();
-
-		// Check if the palette was successfully inserted, and if not, retry
-		if (!document.querySelector("#commandPalette")) {
-			if (retryCount < 5) {
-				console.log(`Insert failed, retrying... (${retryCount + 1}/5)`);
-				setTimeout(() => insertCommandPalette(retryCount + 1), 3000);
-			} else {
-				console.error("Failed to insert command palette after 5 retries.");
-			}
-		} else {
-			console.log("Command palette successfully inserted.");
-		}
-	}
-
-	function executeStartFunctionsRepeatedly() {
-		let count = 0;
-		const intervalId = setInterval(() => {
-			insertCommandPalette();
-			insertCustomButtons();
-			setInterval(function () {
-				updateActiveButton();
-			}, 1000);
-
-			count++;
-			if (count >= 3) {
-				clearInterval(intervalId);
-			}
-		}, 5000); // Execute every 5 seconds
-	}
-
-	if (document.readyState === "loading") {
-		// The document is still loading, wait for DOMContentLoaded
-		document.addEventListener(
-			"DOMContentLoaded",
-			executeStartFunctionsRepeatedly,
-		);
-	} else {
-		// The `DOMContentLoaded` event has already fired, execute immediately
-		executeStartFunctionsRepeatedly();
-	}
-
-	let lastHref = document.location.href;
-	setInterval(function () {
-		const currentHref = document.location.href;
-
-		if (lastHref !== currentHref) {
-			lastHref = currentHref;
-			insertCommandPalette();
-			insertCustomButtons();
-		}
-	}, 5000);
-
-	//============ Feat insert command palette END ============
 	//============ Feat custom selector Variables/Actions/Triggers START============
 
 	// Define updateActiveButton in the outer scope
@@ -811,7 +680,7 @@
 		});
 	}
 
-	function insertCustomButtons() {
+	function insertCustomEditorPaletteButtons() {
 		if (document.getElementById("customActionVariableButtons")) {
 			console.log("Custom buttons already added.");
 			return;
@@ -844,8 +713,8 @@
 			updateActiveButton();
 		};
 
-		containerDiv.appendChild(actionButton);
 		containerDiv.appendChild(variableButton);
+		containerDiv.appendChild(actionButton);
 		containerDiv.appendChild(triggerButton);
 
 		const palette = document.querySelector(".editor-layout__palette");
@@ -858,38 +727,294 @@
 
 		const style = document.createElement("style");
 		style.textContent = `
-        #customActionVariableButtons {
-            display: flex;
-            width: 100%;
-            height: 38px !important;
-            background: white;
-        }
-        #customActionVariableButtons button {
-            all: unset;
-            font-size: .85rem;
-            font-weight: 300;
-            cursor: pointer;
-            margin: 4px;
-            border-radius: 5px;
-            border-bottom: 3px solid transparent;
-            background-color: transparent;
-            color: black;
-            flex-grow: 1;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-        #customActionVariableButtons button:hover {
-            background-color: #dae9f3;
-        }
-        .buttonToolbarActive {
-            background-color: #dae9f3 !important;
-        }
-        .editor-palette.g-box-sizing_border-box {
-            margin-top: 38px;
-        }
-    `;
+		#customActionVariableButtons {
+			display: flex;
+			width: 100%;
+			height: 38px !important;
+			background: white;
+		}
+		#customActionVariableButtons button {
+			all: unset;
+			font-size: .85rem;
+			font-weight: 300;
+			cursor: pointer;
+			margin: 4px;
+			border-radius: 5px;
+			border: 1px solid transparent;
+			background-color: transparent;
+			color: #3c5e83;
+			flex-grow: 1;
+			text-align: center;
+			transition: background-color 0.3s;
+		}
+		#customActionVariableButtons button:hover {
+			background-color: #dae9f3;
+		}
+		.buttonToolbarActive {
+			border: 1px solid #3c5e83 !important;
+			text-shadow: 0.5px 0 0 #3c5e83 , -0.01px 0 0 #3c5e83 !important;
+		}
+		.editor-palette.g-box-sizing_border-box {
+			margin-top: 38px;
+		}
+	`;
 		document.head.appendChild(style);
 	}
-
 	//============ Feat custom selector Variables/Actions/Triggers END============
+	//============ Feat UNIVERSAL COPY/PASTE START============
+	function insertUniversalCopyPasteButtons(attempt = 1) {
+		setTimeout(() => {
+			const actionBar = document.querySelector('.action-bar--theme_info');
+
+			// If actionBar is found and the buttons have not been added yet
+			if (actionBar && !actionBar.querySelector('.universalCopy')) {
+				const separator = document.createElement('div');
+				separator.className = 'action-bar__separator';
+				actionBar.appendChild(separator);
+
+				const copyButton = document.createElement('button');
+				copyButton.className = 'universalCopy rio-focus rio-focus--inset_0 rio-focus--border-radius_4px rio-focus--has_element-focus-visible rio-bare-button g-reset-element rio-bare-button--size_14px rio-bare-button--is_square rio-bare-button--square_26x26 rio-bare-button--is_clickable rio-bare-button--rio_interactive-whisper';
+				copyButton.innerHTML = `<div class="icon-button-icon"><span class="icon fa fa-rocket icon--block icon-button-icon__icon"></span></div>`;
+				copyButton.title = 'Universal Copy';
+				copyButton.onclick = universalCopy;
+				actionBar.appendChild(copyButton);
+
+				const pasteButton = document.createElement('button');
+				pasteButton.className = 'universalPaste rio-focus rio-focus--inset_0 rio-focus--border-radius_4px rio-focus--has_element-focus-visible rio-bare-button g-reset-element rio-bare-button--size_14px rio-bare-button--is_square rio-bare-button--square_26x26 rio-bare-button--is_clickable rio-bare-button--rio_interactive-whisper';
+				pasteButton.innerHTML = `<div class="icon-button-icon"><span class="icon fa fa-rocket icon--block icon-button-icon__icon" style="transform: rotate(180deg);"></span></div>`;
+				pasteButton.title = 'Universal Paste';
+				pasteButton.onclick = universalPaste;
+				actionBar.appendChild(pasteButton);
+			} else if (attempt < 3) {
+				// If not found, retry up to 3 times
+				insertUniversalCopyPasteButtons(attempt + 1);
+			}
+		}, 1000 * attempt); // Delay increases with each attempt
+	}
+
+	function universalCopy() {
+		// Trigger the copy action in the UI
+		document.querySelector(".aa-icon-action-clipboard-copy--shared").click();
+		
+		// Retrieve the JSON string from local storage
+		const globalClipboardJSON = localStorage.getItem('globalClipboard');
+		
+		// Parse the JSON string into an object
+		let globalClipboard = {};
+		try {
+			globalClipboard = JSON.parse(globalClipboardJSON);
+		} catch(e) {
+			console.error("Error parsing JSON:", e);
+			return;  // Exit if there is a parsing error
+		}
+
+		// Update the "uid" key to 🔥🔥🔥
+		globalClipboard.uid = "🔥🔥🔥";
+
+		// Stringify the modified object and store it in Tampermonkey storage
+		GM_setValue('universalClipboard', JSON.stringify(globalClipboard));
+	}
+	
+	function universalPaste() {
+		// Click on copy to activate paste button
+		document.querySelector(".aa-icon-action-clipboard-copy--shared").click();
+
+		// Retrieve the JSON string from Tampermonkey storage
+		let universalClipboard = GM_getValue('universalClipboard')
+
+		// Write the JSON string to local storage after replacing single quotes and UID
+		if (universalClipboard) {
+			let emojiUid = generateEmojiString();
+			universalClipboard = universalClipboard.replace(/'/g, '"');
+			universalClipboard = universalClipboard.replace(/🔥🔥🔥/g, emojiUid);
+
+			localStorage.setItem("globalClipboard", universalClipboard);
+			localStorage.setItem("globalClipboardUid", `"${emojiUid}"`);
+		}		
+
+		// Wait for a second before triggering the paste action
+		setTimeout(() => {
+			document.querySelector(".aa-icon-action-clipboard-paste--shared").click();
+		}, 1000);
+	}
+	//============ Feat UNIVERSAL COPY/PASTE END============	
+	//============ Feat insert command palette START ============
+	// Insterts the command palette
+	function insertCommandPalette(retryCount = 0) {
+		// Check if the palette was already inserted
+		if (document.querySelector("#commandPalette")) {
+			console.log("Command palette already inserted.");
+			return;
+		}
+
+		// Create the container div and set its inner HTML
+		const containerDiv = document.createElement("div");
+		containerDiv.id = "commandPalette";
+		containerDiv.className = "command_palette--hidden";
+		containerDiv.innerHTML = `
+			<input type="text" id="commandInput" placeholder="Enter command...">
+			<div id="commandPredictions" class="command_predictions"></div>
+		`;
+
+		// Append the container div to the body
+		document.body.appendChild(containerDiv);
+
+		// Create and insert CSS
+		const css = `
+			#commandPalette * {
+				font-size: 1.15rem;
+				font-family: Museo Sans,sans-serif;
+			}
+
+			#commandPalette {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: white;
+				border-radius: 10px 10px 0 0;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-width: 30vw;
+				max-width: 80vw;
+				width: 600px;
+				z-index: 99999;
+
+				box-shadow: 0px 0px 0px 5000px #00000054;
+			}
+
+			#commandInput,
+			#commandInput:focus-visible,
+			#commandInput:active {
+				unset: all;
+				padding: 10px;
+				width: 93%;
+				margin-bottom: 10px;
+				border: 2px solid transparent;
+				border-radius: 5px;
+			}
+
+			#commandPalette:focus,
+			#commandPalette:active {
+				border-color: orange;
+			}
+
+			#commandPredictions {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				width: 100%;
+				background-color: white;
+				box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+				border-radius: 0 0 10px 10px;
+				max-height: 200px;
+				overflow-y: auto;
+				z-index: 100000;
+			}
+
+			.command_prediction-item.active {
+				background-color: #f0f0f0;
+			}
+
+			.command_prediction-item strong {
+				font-weight: bold;
+			}
+
+			.command_prediction-item {
+				padding: 8px;
+				cursor: pointer;
+				border-bottom: 1px solid #eee;
+			}
+
+			.command_prediction-item:hover,
+			.command_prediction-item.active {
+				background-color: #f0f0f0;
+			}
+
+			@keyframes fadeIn {
+				from { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+				to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+			}
+
+			@keyframes fadeOut {
+				from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+				to { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+			}
+
+			.command_palette--visible {
+				display: block;
+				animation: fadeIn 0.25s ease-out forwards;
+			}
+
+			.command_palette--hidden {
+				animation: fadeOut 0.25s ease-out forwards;
+				display: none;
+				pointer-events: none;
+				opacity: 0;
+				z-index: -1;
+			}
+		`;
+
+		const style = document.createElement("style");
+		style.type = "text/css";
+		style.appendChild(document.createTextNode(css));
+		document.head.appendChild(style);
+
+		setupCommandInputEventListeners();
+
+		// Check if the palette was successfully inserted, and if not, retry
+		if (!document.querySelector("#commandPalette")) {
+			if (retryCount < 5) {
+				console.log(`Insert failed, retrying... (${retryCount + 1}/5)`);
+				setTimeout(() => insertCommandPalette(retryCount + 1), 3000);
+			} else {
+				console.error("Failed to insert command palette after 5 retries.");
+			}
+		} else {
+			console.log("Command palette successfully inserted.");
+		}
+	}
+	//============ Feat insert command palette END ============
+
+	//============ Call insert functions START ============
+	function executeStartFunctionsRepeatedly() {
+		let count = 0;
+		const intervalId = setInterval(() => {
+			insertCommandPalette();
+			insertCustomEditorPaletteButtons();
+			setInterval(function () {updateActiveButton();}, 1000);
+			insertUniversalCopyPasteButtons();
+
+			count++;
+			if (count >= 3) {
+				clearInterval(intervalId);
+			}
+		}, 5000); // Execute every 5 seconds
+	}
+
+	if (document.readyState === "loading") {
+		// The document is still loading, wait for DOMContentLoaded
+		document.addEventListener(
+			"DOMContentLoaded",
+			executeStartFunctionsRepeatedly,
+		);
+	} else {
+		// The `DOMContentLoaded` event has already fired, execute immediately
+		executeStartFunctionsRepeatedly();
+	}
+
+	let lastHref = document.location.href;
+	setInterval(function () {
+		const currentHref = document.location.href;
+
+		if (lastHref !== currentHref) {
+			lastHref = currentHref;
+			insertCommandPalette();
+			insertCustomEditorPaletteButtons();
+			insertUniversalCopyPasteButtons();
+		}
+	}, 5000);
+
+	//============ Call insert functions END ============
 })();

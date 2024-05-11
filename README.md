@@ -55,7 +55,7 @@ It's important to note that:
 ## Usage
 
 1. Navigate to the Automation Anywhere platform.
-2. Press `Ctrl + P` to invoke the command palette.
+2. Press `Alt + P` to invoke the command palette.
 3. Enter a command or `help` for a list of commands.
 4. Press `Enter` to execute the command.
 

@@ -13,10 +13,6 @@
 
 (function () {
 	"use strict";
-	const configLink = "";
-	const eventLink = "";
-	const filesLink = "";
-
 	let activePredictionIndex = -1; // Track the active (highlighted) prediction
 	let currentPredictionActions = []; // Store current predictions' actions for keyboard navigation
 
@@ -42,11 +38,6 @@
 			aliases: ["duv", "delete unused", "remove unused variables"],
 			description: "Delete unused variables",
 		},
-		hideDialog: {
-			action: hideDialog,
-			aliases: ["hd", "hide dialog", "close dialog"],
-			description: "Hide the dialog that appears when a bot is running",
-		},
 		updatePackages: {
 			action: updatePackages,
 			aliases: ["up", "updatepkgs", "upgrade packages"],
@@ -56,27 +47,6 @@
 			action: foldAll,
 			aliases: ["fa", "fold all", "collapse all"],
 			description: "Fold all sections in the code",
-		},
-		openConfig: {
-			action: function () {
-				openLinkInNewTab(configLink);
-			},
-			aliases: ["c", "config", "settings"],
-			description: "Opens the configuration.xml file for the current project",
-		},
-		openEventFile: {
-			action: function () {
-				openLinkInNewTab(eventLink);
-			},
-			aliases: ["e", "event", "events"],
-			description: "Opens the events.xml file for the current project",
-		},
-		openFiles: {
-			action: function () {
-				openLinkInNewTab(filesLink);
-			},
-			aliases: ["f", "files", "open files"],
-			description: "Opens the files for the current project worked on",
 		},
 		showHelp: {
 			action: function () {
@@ -382,31 +352,6 @@
 		deleteButton.click();
 	}
 
-	function hideDialog() {
-		var dialogElement = document.querySelector('[role="dialog"]');
-		if (dialogElement) {
-			dialogElement.parentNode.removeChild(dialogElement);
-		} else {
-			console.error('No element found with role="dialog"');
-		}
-
-		var backdropElement = document.querySelector(
-			".jsx-3772251890.modal__backdrop",
-		);
-		if (backdropElement) {
-			backdropElement.parentNode.removeChild(backdropElement);
-		} else {
-			console.error("No element backdrop found");
-		}
-
-		backdropElement = document.querySelector(".modal__backdrop");
-		if (backdropElement) {
-			backdropElement.parentNode.removeChild(backdropElement);
-		} else {
-			console.error("No element backdrop found");
-		}
-	}
-
 	function openLinkInNewTab(url) {
 		var newWindow = window.open(url, "_blank");
 		if (newWindow) {
@@ -429,16 +374,12 @@
 	function showHelp() {
 		alert(
 			"List of commands:\n" +
-				"a, addaction: Opens and focuses the actions input field\n" +
+				"a, addaction: Shows and focuses the actions input field\n" +
 				"adv, addvar: Adds a new variable\n" +
 				"v, showvars: Shows all variables\n" +
 				"duv, delete unused: Deletes unused variables\n" +
-				"hd, hide dialog: Hides the dialog when a bot is running\n" +
 				"up, updatepkgs: Updates all packages\n" +
 				"fa, fold all: Folds all sections in the code\n" +
-				"c, config: Opens the configuration.xml file for the current project\n" +
-				"e, event: Opens the events.xml file for the current project\n" +
-				"f, files: Opens the files for the current project\n" +
 				"help, h: Displays this help information",
 		);
 	}

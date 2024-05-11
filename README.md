@@ -1,13 +1,16 @@
 # Better AutomationAnywhere
 <div align="center">
-  <img src="https://i.ibb.co/bFN6g2j/aa-preview.png" alt="aa-preview" border="0">
+  <img src="https://i.ibb.co/pK7C9N2/aa-preview.png" alt="aa-preview" border="0">
 </div>
 
 #### Working on AutomationAnywhere Control Room 31.0.0 and 32.0.0
 
 This is a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), both designed to work together (the `aa.user.styl` file can work alone). They enhance the Automation Anywhere platform by providing an improved user interface (UI) and a set of features accessible through a command palette. The `userScript.js` file is a script that runs in the Tampermonkey extension, while the `aa.user.styl` file runs within the Stylus extension.
 
-## Description
+## Why two damn files on two different extensions?
+This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
+
+## Features
 ### aa.user.styl
 
 ### userScript.js

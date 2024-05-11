@@ -15,11 +15,11 @@ This decision was made considering the fact that there's no need to reinvent the
 ### aa.user.styl
 <img src="https://i.ibb.co/W2bxLKX/image.png" alt="image" border="0" width="50%">
 <br>
-
+<img src="https://i.ibb.co/fx0RDqk/input-to-areatext.png" alt="input-to-areatext" border="0" width="60%">
 - Converts input fields that have a horizontal scroll into text areas that break words, allowing you to view all contents at a glance.
-<img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0" width="50%">
-<br>
-- Redesigns the annoying buttons for selecting actions and variables.
+
+<img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0" width="60%">
+- Redesigned the annoying buttons for selecting actions, variables and triggers.
 - Increases the font size and assigns Cascadia Code and Cursive Cascadia Code to key parts of the UI.
 - Adds a colorful background.
 - Much more...

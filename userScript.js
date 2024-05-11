@@ -9,7 +9,6 @@
 // @grant        GM_setValue
 // @grant    	 GM_getValue
 // @license      MIT
-// @require      https://raw.githubusercontent.com/Jamir-boop/automationanywhere-improvements/main/snippets.js?bd78a4a
 // ==/UserScript==
 
 (function () {
@@ -78,27 +77,6 @@
 			},
 			aliases: ["f", "files", "open files"],
 			description: "Opens the files for the current project worked on",
-		},
-		forLoop: {
-			action: function () {
-				pasteSnippet("forloop");
-			},
-			aliases: ["forloop", "snippet forloop"],
-			description: "Insert Loop 'For' action snippet",
-		},
-		ifString: {
-			action: function () {
-				pasteSnippet("ifstring");
-			},
-			aliases: ["ifstring", "snippet if string"],
-			description: "Insert 'if' action with string comparison",
-		},
-		comment: {
-			action: function () {
-				pasteSnippet("comment");
-			},
-			aliases: ["comment"],
-			description: "Insert comment block to current task",
 		},
 		showHelp: {
 			action: function () {
@@ -461,7 +439,6 @@
 				"c, config: Opens the configuration.xml file for the current project\n" +
 				"e, event: Opens the events.xml file for the current project\n" +
 				"f, files: Opens the files for the current project\n" +
-				"forloop: Insert snippet load for loop\n" +
 				"help, h: Displays this help information",
 		);
 	}
@@ -638,29 +615,6 @@
 
 		return uniqueString;
 	}
-
-	function pasteSnippet(key) {
-		//document.querySelector("button[name='shared-clipboard-copy']").click();
-		let emojiUid = generateEmojiString();
-
-		const node = snippetJson.snippet.find((item) => item.nodeName === key);
-		if (node) {
-			let data = node.data;
-
-			data = data.replace(/'/g, '"');
-			data = data.replace(/🔥🔥🔥/g, emojiUid);
-
-			localStorage.setItem("globalClipboard", data);
-			localStorage.setItem("globalClipboardUid", `"${emojiUid}"`);
-		} else {
-			console.log(`Node with nodeName ${key} not found.`);
-		}
-
-		setTimeout(() => {
-			document.querySelector("button[name='shared-clipboard-paste']").click();
-		}, 1200);
-	}
-
 	//============ Feat snippets END ============
 	//============ Feat custom selector Variables/Actions/Triggers START============
 

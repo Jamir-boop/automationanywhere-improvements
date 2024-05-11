@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.2.0
+// @version      0.2.1
 // @description  Enhanced Automation Anywhere developer experience
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
@@ -48,6 +48,11 @@
 			aliases: ["fa", "fold all", "collapse all"],
 			description: "Fold all sections in the code",
 		},
+		redirectToPrivateRepository: {
+			action: redirectToPrivateRepository,
+			aliases: ["p", "private", "private bots"],
+			description: "Redirects to the private bots folder.",
+		},		
 		showHelp: {
 			action: function () {
 				showHelp();
@@ -732,7 +737,15 @@
 			document.querySelector(".aa-icon-action-clipboard-paste--shared").click();
 		}, 1000);
 	}
-	//============ Feat UNIVERSAL COPY/PASTE END============	
+	//============ Feat UNIVERSAL COPY/PASTE END============
+	//============ Feat redirect to private bots START ============
+	function redirectToPrivateRepository() {
+		const currentUrl = window.location.href;
+		const pattern = /^(https:\/\/[^\/]*\.my\.automationanywhere\.digital\/).*/;
+		const newUrl = currentUrl.replace(pattern, '$1#/bots/repository/private/');
+		window.location.href = newUrl;
+	}
+	//============ Feat redirect to private bots END ============
 	//============ Feat insert command palette START ============
 	// Insterts the command palette
 	function insertCommandPalette(retryCount = 0) {

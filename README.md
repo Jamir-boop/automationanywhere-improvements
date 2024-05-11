@@ -29,6 +29,7 @@ This decision was made considering the fact that there's no need to reinvent the
 - And much more...
 
 ### userScript.js
+https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/f7c6eec2-409f-495d-88e3-028e5b6d4593
 <div align="center">
   <video autoplay loop muted>
     <source src="https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/f7c6eec2-409f-495d-88e3-028e5b6d4593" type="video/mp4">

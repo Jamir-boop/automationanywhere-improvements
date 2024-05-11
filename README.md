@@ -29,7 +29,12 @@ This decision was made considering the fact that there's no need to reinvent the
 - And much more...
 
 ### userScript.js
-https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/d3f31b5a-9062-4269-8e33-b78d2613babb
+<div align="center">
+  <video autoplay loop muted>
+    <source src="https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/d3f31b5a-9062-4269-8e33-b78d2613babb" type="video/mp4">
+  </video>
+</div>
+
 The script adds a command palette to Automation Anywhere, which can be invoked using the `Alt + P` key combination. The command palette provides a set of commands that can be used to perform various actions on the Automation Anywhere platform. The commands include:
 
 - `a`, `addaction`, `add action`, `action`: Opens and focuses the actions input field.

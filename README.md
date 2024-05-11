@@ -7,7 +7,8 @@
 
 This is a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), both designed to work together (the `aa.user.styl` file can work alone). They enhance the Automation Anywhere platform by providing an improved user interface (UI) and a set of features accessible through a command palette. The `userScript.js` file is a script that runs in the Tampermonkey extension, while the `aa.user.styl` file runs within the Stylus extension.
 
-## Why two damn files on two different extensions?
+## Why are there two damn separate files with different extensions?
+I'm aware that the presence of multiple files across different formats may seem unnecessary and potentially confusing.
 This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
 
 ## Features

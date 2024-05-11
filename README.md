@@ -18,6 +18,7 @@ This decision was made considering the fact that there's no need to reinvent the
 
 - Converts input fields that have a horizontal scroll into text areas that break words, allowing you to view all contents at a glance.
 <img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0" width="50%">
+<br>
 - Redesigns the annoying buttons for selecting actions and variables.
 - Increases the font size and assigns Cascadia Code and Cursive Cascadia Code to key parts of the UI.
 - Adds a colorful background.

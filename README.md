@@ -13,9 +13,11 @@ This decision was made considering the fact that there's no need to reinvent the
 
 ## Features
 ### aa.user.styl
-<img src="https://i.ibb.co/W2bxLKX/image.png" alt="image" border="0">
+<img src="https://i.ibb.co/W2bxLKX/image.png" alt="image" border="0" width="200px">
+<br>
+
 - Converts input fields that have a horizontal scroll into text areas that break words, allowing you to view all contents at a glance.
-<img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0">
+<img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0" width="200px">
 - Redesigns the annoying buttons for selecting actions and variables.
 - Increases the font size and assigns Cascadia Code and Cursive Cascadia Code to key parts of the UI.
 - Adds a colorful background.

@@ -38,12 +38,6 @@ The script adds a command palette to Automation Anywhere, which can be invoked u
 
 If an invalid command is entered, a help message is displayed with a list of valid commands.
 
-## Why are there two separate files with different extensions?
-
-I'm aware that the presence of two files across different formats may seem unnecessary and potentially confusing.
-
-This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
-
 ## Installation
 These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), designed to function either together or independently. The `userScript.js` operates within the Tampermonkey extension, whereas the `aa.user.styl` is executed through the Stylus extension.
 
@@ -62,6 +56,12 @@ These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), desig
 2. Press `Alt + P` to invoke the command palette.
 3. Enter a command or `help` for a list of commands.
 4. Press `Enter` to execute the command.
+
+## Why are there two separate files with different extensions?
+
+I'm aware that the presence of two files across different formats may seem unnecessary and potentially confusing.
+
+This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
 
 ## License
 

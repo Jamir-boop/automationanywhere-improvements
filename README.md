@@ -54,9 +54,7 @@ These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), desig
 Before starting if you only want the
 
 1. Install the [Tampermonkey extension](https://www.tampermonkey.net) on your browser.
-2. Click on the Tampermonkey icon and select "Create a new script".
-3. Copy and paste the provided script into the editor.
-4. Save the script.
+2. Install the [userScript file](https://update.greasyfork.org/scripts/477891/Better%20AutomationAnywhere.user.js).
 
 ## Usage
 

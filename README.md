@@ -12,12 +12,17 @@ Improvements to enhance the Automation Anywhere development platform include an 
 ### aa.user.styl
 <img src="https://i.ibb.co/W2bxLKX/image.png" alt="image" border="0" width="50%">
 <br>
+
+- Universal copy/paste allows you to copy and paste actions between control rooms.
+
 <img src="https://i.ibb.co/fdmcjvF/image.png" alt="image" border="0" width="50%">
-- Universal copy/paste allow you to copy and paste actions between control rooms.
 
 - Converts input fields that have a horizontal scroll into text areas that break words, allowing you to view all contents at a glance.
+
 <img src="https://i.ibb.co/fx0RDqk/input-to-areatext.png" alt="input-to-areatext" border="0" width="60%">
+
 - Redesigned the annoying buttons for selecting actions, variables, and triggers.
+
 <img src="https://i.ibb.co/tHhMdWs/services.png" alt="services" border="0" width="60%">
 
 - Increases the font size and assigns Cascadia Code and Cursive Cascadia Code to key parts of the UI.

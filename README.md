@@ -53,8 +53,8 @@ These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), desig
 
 1. Install the [Tampermonkey extension](https://www.tampermonkey.net) on your browser.
 2. Install the [userScript file](https://update.greasyfork.org/scripts/477891/Better%20AutomationAnywhere.user.js).
-3. Install the Stylus extension on yout browser
-4. Install the userStyle file.
+3. Install the [Stylus extension](https://github.com/openstyles/stylus) on yout browser
+4. Install the [userStyle](https://github.com/Jamir-boop/automationanywhere-improvements/raw/main/aa.user.styl) file.
 
 ## Usage
 

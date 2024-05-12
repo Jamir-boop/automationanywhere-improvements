@@ -51,10 +51,10 @@ These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), desig
 - Ensure the control room is set to English to maintain the correct functionality of script selectors.
 - Optionally, consider installing the [Casacadia Code](https://github.com/microsoft/cascadia-code) font on your system.
 
-Before starting if you only want the
-
 1. Install the [Tampermonkey extension](https://www.tampermonkey.net) on your browser.
 2. Install the [userScript file](https://update.greasyfork.org/scripts/477891/Better%20AutomationAnywhere.user.js).
+3. Install the Stylus extension on yout browser
+4. Install the userStyle file.
 
 ## Usage
 

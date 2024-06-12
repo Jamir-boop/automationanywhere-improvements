@@ -6,12 +6,12 @@
 @author         Jamir-boop
 @preprocessor   stylus
 
-@var checkbox runButton "RUN button style 🔥" 1
-@var checkbox customPaletteButtons "Activate this if using userJS" 0
+@var checkbox customPaletteButtons "Activate this if using userJS ⚙" 0
+@var checkbox runButton "RUN button style 🔥" 0
 @var checkbox pathFinder "Hide sidebar" 0
 @var checkbox bgStyle "Background" 1
 @var checkbox fontStyle "Font" 1
-@var checkbox foldersStyle "📈 Folders" 1
+@var checkbox foldersStyle "Folders 📈" 1
 @var checkbox dialogStyle "Bot running dialog to bottom left" 0
 @var color    backgroundColor3  "Gradient 1"   rgba(255, 223, 85, .2)
 @var color    backgroundColor2  "Gradient 2"   rgba(255, 179, 71, .2)
@@ -23,11 +23,10 @@
 adjustDatatableColumns()
 	.datatable-header-container,
 	.datatable-row
-		for column in 5..10
-			unless column == -5 // Columns to exclude
-				.datatable-column:nth-child({column})
-					display: none !important
-					background: red
+			.datatable-column:nth-child(5),
+			.datatable-column:nth-child(6)
+				display: none !important
+				background: red
 
 // Common adjustments for datatable columns, varying by context
 datatableCommonAdjustments(widthValue)

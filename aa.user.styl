@@ -11,7 +11,7 @@
 @var checkbox pathFinder "Hide sidebar" 0
 @var checkbox bgStyle "Background" 1
 @var checkbox fontStyle "Font" 1
-@var checkbox loadingCat "Loading cat" 1
+@var checkbox loadingCat "Loading cat 🐈" 1
 @var checkbox foldersStyle "Folders 📈" 0
 @var checkbox dialogStyle "Bot running dialog to bottom left" 0
 @var color    backgroundColor3  "Gradient 1"   rgba(255, 223, 85, .2)
@@ -189,6 +189,9 @@ normalFontSize = .75rem
 	if foldersStyle 
 			adjustDatatableColumns()
 			datatableCommonAdjustments(500px)
+			
+			.datatableheader-label
+				flex-direction: row-reverse
 
 	if dialogStyle
 			// Style of dialog boxes
@@ -333,5 +336,3 @@ normalFontSize = .75rem
 						position: sticky
 						top: 10px
 						z-index: 99999
-				
-		

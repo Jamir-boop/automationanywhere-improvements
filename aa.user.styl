@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.9
+@version        0.1.10
 @description    Font size customization for automationanywhere.
 @author         Jamir-boop
 @preprocessor   stylus
@@ -24,7 +24,7 @@
 adjustDatatableColumns()
 	.datatable-header-container,
 	.datatable-row
-			.datatable-column:nth-child(5),
+			.datatable-column:nth-child(4),
 			.datatable-column:nth-child(6),
 			.datatable-column:nth-child(7)
 				display: none !important
@@ -192,6 +192,8 @@ normalFontSize = .75rem
 			
 			.datatableheader-label
 				flex-direction: row-reverse
+			.pagetitle-label
+				cursiveCascadiaFont()
 
 	if dialogStyle
 			// Style of dialog boxes
@@ -200,11 +202,6 @@ normalFontSize = .75rem
 					//top: 60vh
 					left: 0
 					bottom: 0
-					width: 25vw !important
-					max-width: 300px !important
-					.message__main
-							width: 25vw !important
-							max-width: 300px !important
 
 			.message__content p
 					font-size: normalFontSize !important
@@ -336,3 +333,6 @@ normalFontSize = .75rem
 						position: sticky
 						top: 10px
 						z-index: 99999
+				
+		
+

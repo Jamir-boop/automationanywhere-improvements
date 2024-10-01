@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.2.1
+// @version      0.2.2
 // @description  Enhanced Automation Anywhere developer experience
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
@@ -52,12 +52,17 @@
 			action: redirectToPrivateRepository,
 			aliases: ["p", "private", "private bots"],
 			description: "Redirects to the private bots folder.",
-		},		
+		},
+		redirectToActivityHistorical: {
+			action: redirectToActivityHistorical,
+			aliases: ["h", "historical", "activity historical"],
+			description: "Redirects to the activities historical tab.",
+		},
 		showHelp: {
 			action: function () {
 				showHelp();
 			},
-			aliases: ["help", "h", "show help"],
+			aliases: ["help", "show help"],
 			description: "Displays help information for available commands",
 		},
 	};
@@ -695,10 +700,10 @@
 	function universalCopy() {
 		// Trigger the copy action in the UI
 		document.querySelector(".aa-icon-action-clipboard-copy--shared").click();
-		
+
 		// Retrieve the JSON string from local storage
 		const globalClipboardJSON = localStorage.getItem('globalClipboard');
-		
+
 		// Parse the JSON string into an object
 		let globalClipboard = {};
 		try {
@@ -714,7 +719,7 @@
 		// Stringify the modified object and store it in Tampermonkey storage
 		GM_setValue('universalClipboard', JSON.stringify(globalClipboard));
 	}
-	
+
 	function universalPaste() {
 		// Click on copy to activate paste button
 		document.querySelector(".aa-icon-action-clipboard-copy--shared").click();
@@ -730,7 +735,7 @@
 
 			localStorage.setItem("globalClipboard", universalClipboard);
 			localStorage.setItem("globalClipboardUid", `"${emojiUid}"`);
-		}		
+		}
 
 		// Wait for a second before triggering the paste action
 		setTimeout(() => {
@@ -738,14 +743,37 @@
 		}, 1000);
 	}
 	//============ Feat UNIVERSAL COPY/PASTE END============
-	//============ Feat redirect to private bots START ============
-	function redirectToPrivateRepository() {
+	//============ Feat redirect utility START ============
+	function redirectToPath(targetPath) {
 		const currentUrl = window.location.href;
-		const pattern = /^(https:\/\/[^\/]*\.my\.automationanywhere\.digital\/).*/;
-		const newUrl = currentUrl.replace(pattern, '$1#/bots/repository/private/');
-		window.location.href = newUrl;
+
+		// Match the base URL, keeping everything up to the first part of the domain and protocol.
+		const pattern = /^(https:\/\/[^\/]*\.automationanywhere\.digital)/;
+
+		// Extract the base URL using the pattern
+		const match = currentUrl.match(pattern);
+
+		if (match) {
+			const baseUrl = match[1]; // Get the base URL (e.g., https://aa-saleseng-us-4sbx.cloud.automationanywhere.digital)
+			const newUrl = baseUrl + targetPath; // Append the target path
+			window.location.href = newUrl; // Redirect to the new URL
+		} else {
+			console.error("Pattern didn't match. The URL might not be in the expected format.");
+		}
 	}
-	//============ Feat redirect to private bots END ============
+
+	// Function to redirect to the private bots repository
+	function redirectToPrivateRepository() {
+		const privateBotsPath = '/#/bots/repository/private/';
+		redirectToPath(privateBotsPath);
+	}
+
+	// Function to redirect to the activity historical page
+	function redirectToActivityHistorical() {
+		const activityHistoricalPath = '/#/activity/historical/';
+		redirectToPath(activityHistoricalPath);
+	}
+	//============ Feat redirect utility END ============
 	//============ Feat insert command palette START ============
 	// Insterts the command palette
 	function insertCommandPalette(retryCount = 0) {

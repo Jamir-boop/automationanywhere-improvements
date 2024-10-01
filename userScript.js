@@ -737,16 +737,34 @@
 				separator.className = 'action-bar__separator';
 				actionBar.appendChild(separator);
 
+				// Create the Universal Copy button
 				const copyButton = document.createElement('button');
-				copyButton.className = 'universalCopy rio-focus rio-focus--inset_0 rio-focus--border-radius_4px rio-focus--has_element-focus-visible rio-bare-button g-reset-element rio-bare-button--size_14px rio-bare-button--is_square rio-bare-button--square_26x26 rio-bare-button--is_clickable rio-bare-button--rio_interactive-whisper';
-				copyButton.innerHTML = `<div class="icon-button-icon"><span class="icon fa fa-rocket icon--block icon-button-icon__icon"></span></div>`;
+				copyButton.className = 'universalCopy rio-focus rio-focus--inset_0 rio-focus--border-radius_4px rio-focus--has_element-focus-visible rio-bare-button g-reset-element rio-bare-button--rio_interactive-softest rio-bare-button--is_parent rio-bare-button--is_clickable rio-bare-button--size_14px rio-bare-button--is_square rio-bare-button--square_26x26 action-bar__item action-bar__item--is_action taskbot-editor__toolbar__action';
+				copyButton.setAttribute('data-button-loading', 'false');
+				copyButton.setAttribute('data-button-working', 'false');
+				copyButton.setAttribute('data-button-ready', 'true');
+				copyButton.setAttribute('name', 'shared-clipboard-copy');
+				copyButton.setAttribute('type', 'button');
+				copyButton.setAttribute('tabindex', '-1');
+				copyButton.setAttribute('aria-label', 'Copy to shared clipboard');
+				copyButton.setAttribute('data-poppy-parentid', '1');
+				copyButton.innerHTML = `<span class="icon fa fa-rocket icon--block"></span>`;
 				copyButton.title = 'Universal Copy';
 				copyButton.onclick = universalCopy;
 				actionBar.appendChild(copyButton);
 
+				// Create the Universal Paste button
 				const pasteButton = document.createElement('button');
-				pasteButton.className = 'universalPaste rio-focus rio-focus--inset_0 rio-focus--border-radius_4px rio-focus--has_element-focus-visible rio-bare-button g-reset-element rio-bare-button--size_14px rio-bare-button--is_square rio-bare-button--square_26x26 rio-bare-button--is_clickable rio-bare-button--rio_interactive-whisper';
-				pasteButton.innerHTML = `<div class="icon-button-icon"><span class="icon fa fa-rocket icon--block icon-button-icon__icon" style="transform: rotate(180deg);"></span></div>`;
+				pasteButton.className = 'universalPaste rio-focus rio-focus--inset_0 rio-focus--border-radius_4px rio-focus--has_element-focus-visible rio-bare-button g-reset-element rio-bare-button--rio_interactive-softest rio-bare-button--is_parent rio-bare-button--is_clickable rio-bare-button--size_14px rio-bare-button--is_square rio-bare-button--square_26x26 action-bar__item action-bar__item--is_action taskbot-editor__toolbar__action';
+				pasteButton.setAttribute('data-button-loading', 'false');
+				pasteButton.setAttribute('data-button-working', 'false');
+				pasteButton.setAttribute('data-button-ready', 'true');
+				pasteButton.setAttribute('name', 'shared-clipboard-paste');
+				pasteButton.setAttribute('type', 'button');
+				pasteButton.setAttribute('tabindex', '-1');
+				pasteButton.setAttribute('aria-label', 'Paste from shared clipboard');
+				pasteButton.setAttribute('data-poppy-parentid', '1');
+				pasteButton.innerHTML = `<span class="icon fa fa-rocket icon--block" style="transform: rotate(180deg);"></span>`;
 				pasteButton.title = 'Universal Paste';
 				pasteButton.onclick = universalPaste;
 				actionBar.appendChild(pasteButton);
@@ -756,6 +774,7 @@
 			}
 		}, 1000 * attempt); // Delay increases with each attempt
 	}
+
 
 	function universalCopy() {
 		// Trigger the copy action in the UI

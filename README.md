@@ -5,7 +5,7 @@
 </div>
 
 Improvements to enhance the Automation Anywhere development platform include an upgraded user interface and a suite of features accessible via a command palette, along with fixes for several annoyances.
-#### Tested and working on AutomationAnywhere Control Room 31.0.0 to 34.0.0
+##### Tested and working on AutomationAnywhere Control Room 31.0.0 to 34.0.0
 
 ## Features
 

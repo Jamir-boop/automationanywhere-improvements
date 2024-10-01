@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.2.2
+// @version      0.3.0
 // @description  Enhanced Automation Anywhere developer experience
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
 // @icon         https://cmpc-1dev.my.automationanywhere.digital/favicon.ico
 // @grant        GM_setValue
 // @grant    	 GM_getValue
+// @grant        GM_registerMenuCommand
 // @license      MIT
 // ==/UserScript==
 
@@ -15,6 +16,16 @@
 	"use strict";
 	let activePredictionIndex = -1; // Track the active (highlighted) prediction
 	let currentPredictionActions = []; // Store current predictions' actions for keyboard navigation
+
+	// Universal Copy and Paste functionality with 3 slots
+
+	// Register menu commands for selecting copy/paste slots
+	GM_registerMenuCommand("Copy to Slot 1", () => copyToSlot(1));
+	GM_registerMenuCommand("Copy to Slot 2", () => copyToSlot(2));
+	GM_registerMenuCommand("Copy to Slot 3", () => copyToSlot(3));
+	GM_registerMenuCommand("Paste from Slot 1", () => pasteFromSlot(1));
+	GM_registerMenuCommand("Paste from Slot 2", () => pasteFromSlot(2));
+	GM_registerMenuCommand("Paste from Slot 3", () => pasteFromSlot(3));
 
 	// Commands and their aliases mapping to functions
 	const commandsWithAliases = {
@@ -667,6 +678,55 @@
 	}
 	//============ Feat custom selector Variables/Actions/Triggers END============
 	//============ Feat UNIVERSAL COPY/PASTE START============
+	// Function to copy data to the specified slot
+	function copyToSlot(slot) {
+		// Trigger the copy action in the UI
+		const copyButton = document.querySelector(".aa-icon-action-clipboard-copy--shared");
+		if (copyButton) {
+			copyButton.click();
+
+			// Retrieve the JSON string from localStorage
+			const globalClipboardJSON = localStorage.getItem('globalClipboard');
+
+			// Parse the JSON and store it in the specific slot using Tampermonkey storage
+			try {
+				const clipboardData = JSON.parse(globalClipboardJSON);
+				clipboardData.uid = "🔥🔥🔥"; // Reset UID
+				GM_setValue(`universalClipboardSlot${slot}`, JSON.stringify(clipboardData));
+			} catch (error) {
+				console.error("Failed to copy data to slot:", error);
+			}
+		}
+	}
+
+	// Function to paste data from the specified slot
+	function pasteFromSlot(slot) {
+		// Retrieve the JSON string from the specified slot in Tampermonkey storage
+		const clipboardData = GM_getValue(`universalClipboardSlot${slot}`);
+
+		if (!clipboardData) {
+			alert(`No data in Slot ${slot}`);
+			return;
+		}
+
+		// Generate a new unique ID for this session
+		let emojiUid = generateEmojiString();
+
+		// Replace the UID and store it back into localStorage
+		let modifiedData = clipboardData.replace(/🔥🔥🔥/g, emojiUid);
+		localStorage.setItem('globalClipboard', modifiedData);
+		localStorage.setItem('globalClipboardUid', `"${emojiUid}"`);
+
+		// Ensure the paste button is available
+		const pasteButton = document.querySelector(".aa-icon-action-clipboard-paste--shared");
+		if (pasteButton) {
+			// Trigger the paste action
+			setTimeout(() => {
+				pasteButton.click();
+			}, 500); // Adjust the timeout as needed
+		}
+	}
+
 	function insertUniversalCopyPasteButtons(attempt = 1) {
 		setTimeout(() => {
 			const actionBar = document.querySelector('.action-bar--theme_info');

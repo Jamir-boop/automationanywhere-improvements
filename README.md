@@ -4,7 +4,7 @@
 <img src="https://i.ibb.co/pK7C9N2/aa-preview.png" alt="aa-preview" border="0">
 </div>
 
-#### Working on AutomationAnywhere Control Room 31.0.0 and 32.0.0
+#### Working on AutomationAnywhere Control Room 31.0.0 to 34.0.0
 Improvements to enhance the Automation Anywhere development platform include an upgraded user interface and a suite of features accessible via a command palette, along with fixes for several annoyances.
 
 ## Features

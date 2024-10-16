@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.11
+@version        0.1.12
 @description    Font size customization for automationanywhere.
 @author         Jamir-boop
 @preprocessor   stylus
@@ -22,21 +22,21 @@
 
 // Mixin for the folders containing task bots
 adjustDatatableColumns()
-	.datatable-header-container,
-	.datatable-row
-			.datatable-column:nth-child(4),
-			.datatable-column:nth-child(6),
-			.datatable-column:nth-child(7)
-				display: none !important
-				background: red
+	.datatable-header-container:not(.modal-form-content .datatable-header-container),
+	.datatable-row:not(.modal-form-content .datatable-row)
+		.datatable-column:nth-child(4):not(.modal-form-content .datatable-column),
+		.datatable-column:nth-child(6):not(.modal-form-content .datatable-column),
+		.datatable-column:nth-child(7):not(.modal-form-content .datatable-column)
+			display: none !important
+			background: red
 
 // Common adjustments for datatable columns, varying by context
 datatableCommonAdjustments(widthValue)
-	.datatable-header-container,
-	.datatable-row
-			.datatable-column:nth-child(3)
-					width: widthValue !important
-		.datatable-column:nth-child(2)
+	.datatable-header-container:not(.modal-form-content .datatable-header-container),
+	.datatable-row:not(.modal-form-content .datatable-row)
+		.datatable-column:nth-child(3):not(.modal-form-content .datatable-column)
+			width: widthValue !important
+		.datatable-column:nth-child(2):not(.modal-form-content .datatable-column)
 			width: 40px !important
 
 pikachuBackground(bgsize)

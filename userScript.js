@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.4.0
-// @description  Enhanced Automation Anywhere developer experience
+// @version      0.4.1
+// @description  Enhanced Automation Anywhere developer experience. Working at CR Version 33.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
 // @icon         https://cmpc-1dev.my.automationanywhere.digital/favicon.ico

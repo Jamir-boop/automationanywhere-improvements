@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0
+// @version      0.3.2
 // @description  Enhanced Automation Anywhere developer experience
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
 // @icon         https://cmpc-1dev.my.automationanywhere.digital/favicon.ico
 // @grant        GM_setValue
-// @grant    	 GM_getValue
+// @grant        GM_getValue
 // @grant        GM_registerMenuCommand
 // @license      MIT
 // ==/UserScript==
@@ -32,48 +32,48 @@
 		addAction: {
 			action: addAction,
 			aliases: ["a", "addaction", "add action", "action"],
-			description: "Opens and focus the actions input field",
+			description: "Shows actions in sidebar",
 		},
 		addVariable: {
 			action: addVariable,
 			aliases: ["adv", "addvar", "add variable"],
-			description: "Add a new variable",
+			description: "Shows dialog to create a new variable",
 		},
 		showVariables: {
 			action: showVariables,
 			aliases: ["v", "showvars", "list variables", "variables"],
-			description: "Show all variables",
+			description: "Shows variables in sidebar",
 		},
 		deleteUnusedVariables: {
 			action: deleteUnusedVariables,
 			aliases: ["duv", "delete unused", "remove unused variables"],
-			description: "Delete unused variables",
+			description: "Shows dialog to select and delete unused variables",
 		},
 		updatePackages: {
 			action: updatePackages,
 			aliases: ["up", "updatepkgs", "upgrade packages"],
-			description: "Update all packages",
+			description: "Opens the packages menu and unfolds the updatable items",
 		},
 		foldAll: {
 			action: foldAll,
 			aliases: ["fa", "fold all", "collapse all"],
-			description: "Fold all sections in the code",
+			description: "Folds all sections in the code",
 		},
 		redirectToPrivateRepository: {
 			action: redirectToPrivateRepository,
 			aliases: ["p", "private", "private bots"],
-			description: "Redirects to the private bots folder.",
+			description: "Redirects to the private bots folder",
 		},
 		redirectToActivityHistorical: {
 			action: redirectToActivityHistorical,
-			aliases: ["h", "historical", "activity historical"],
-			description: "Redirects to the activities historical tab.",
+			aliases: ["historical", "history","activity historical"],
+			description: "Redirects to the activities historical tab",
 		},
 		showHelp: {
 			action: function () {
 				showHelp();
 			},
-			aliases: ["help", "show help"],
+			aliases: ["help", "man", "show help"],
 			description: "Displays help information for available commands",
 		},
 	};
@@ -393,16 +393,80 @@
 	}
 
 	function showHelp() {
-		alert(
-			"List of commands:\n" +
-				"a, addaction: Shows and focuses the actions input field\n" +
-				"adv, addvar: Adds a new variable\n" +
-				"v, showvars: Shows all variables\n" +
-				"duv, delete unused: Deletes unused variables\n" +
-				"up, updatepkgs: Updates all packages\n" +
-				"fa, fold all: Folds all sections in the code\n" +
-				"help, h: Displays this help information",
-		);
+		// Create modal elements
+		const modalOverlay = document.createElement('div');
+		const modal = document.createElement('div');
+		const modalContent = document.createElement('div');
+		const closeButton = document.createElement('button');
+
+		// Set styles for the modal
+		modalOverlay.style.position = 'fixed';
+		modalOverlay.style.top = '0';
+		modalOverlay.style.left = '0';
+		modalOverlay.style.width = '100vw';
+		modalOverlay.style.height = '100vh';
+		modalOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+		modalOverlay.style.display = 'flex';
+		modalOverlay.style.justifyContent = 'center';
+		modalOverlay.style.alignItems = 'center';
+		modalOverlay.style.zIndex = '1000'; // Ensure it appears above other elements
+
+		modal.style.backgroundColor = 'white';
+		modal.style.padding = '20px';
+		modal.style.borderRadius = '8px';
+		modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+		modal.style.maxWidth = '400px';
+		modal.style.width = '80%';
+		modal.style.position = 'relative';
+
+		// Build the help content from the commandsWithAliases object
+		let helpContent = "<h3>List of Commands:</h3><ul>";
+
+		for (let command in commandsWithAliases) {
+			const { aliases, description } = commandsWithAliases[command];
+			helpContent += `<li><b>${aliases.join(', ')}:</b> ${description}</li>`;
+		}
+
+		helpContent += "</ul>";
+
+		modalContent.innerHTML = helpContent;
+
+		closeButton.textContent = 'Close';
+		closeButton.style.marginTop = '10px';
+		closeButton.style.padding = '8px 16px';
+		closeButton.style.border = 'none';
+		closeButton.style.backgroundColor = 'var(--color_background_interactive)';
+		closeButton.style.color = 'white';
+		closeButton.style.cursor = 'pointer';
+		closeButton.style.borderRadius = '4px';
+
+		// Append elements
+		modal.appendChild(modalContent);
+		modal.appendChild(closeButton);
+		modalOverlay.appendChild(modal);
+		document.body.appendChild(modalOverlay);
+
+		// Close function
+		function closeModal() {
+			document.body.removeChild(modalOverlay);
+		}
+
+		// Close when clicking outside the modal
+		modalOverlay.addEventListener('click', (e) => {
+			if (e.target === modalOverlay) {
+				closeModal();
+			}
+		});
+
+		// Close on Escape key
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') {
+				closeModal();
+			}
+		});
+
+		// Close on button click
+		closeButton.addEventListener('click', closeModal);
 	}
 	//============ Command palette stuff END ============
 

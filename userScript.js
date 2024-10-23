@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.4.1
+// @version      0.4.2
 // @description  Enhanced Automation Anywhere developer experience. Working at CR Version 33.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
@@ -68,11 +68,6 @@
 			action: redirectToActivityHistorical,
 			aliases: ["historical", "history","activity historical"],
 			description: "Redirects to the activities historical tab",
-		},
-		pasteLogToFile: {
-			action: pasteLogToFile,
-			aliases: ["log"],
-			description: "Pastes log entries at the selected line in the task bot. If a version error occurs, the specified version will be saved for future use.",
 		},
 		showHelp: {
 			action: function () {
@@ -647,142 +642,6 @@
 		}
 
 		return uniqueString;
-	}
-
-
-	function getSelectedLineNumber() {
-		/**
-		 * Function to get the inner text of the number element based on its relation to the title element.
-		 * It searches for the title element, finds its parent div, and retrieves the text from the sibling element
-		 * with the class `.taskbot-canvas-list-node__number.taskbot-canvas-list-node__number--clickable`.
-		 * @returns {string|null} The inner text of the number element, or null if not found.
-		 */
-		// Select the element with the title class
-		const divSeleccionado = document.querySelector('.taskbot-canvas-list-node__title.taskbot-canvas-list-node__title--cursor.taskbot-canvas-list-node__title--cursor-pivot');
-
-		if (divSeleccionado) {
-			const parentDiv = divSeleccionado.closest('div.taskbot-canvas-list-node.taskbot-canvas-list-node--mode-edit');
-
-			if (parentDiv) {
-				const numberElement = parentDiv.querySelector('.taskbot-canvas-list-node__number.taskbot-canvas-list-node__number--clickable');
-
-				if (numberElement) {
-					return numberElement.innerText;
-				} else {
-					console.log('Number element not found');
-					return null;
-				}
-			} else {
-				console.log('Parent div not found');
-				return null;
-			}
-		} else {
-			console.log('Title element not found');
-			return null;
-		}
-	}
-
-	function setGMPackageUsedVersionFromErrorMessage() {
-		const element = document.querySelector(".message__content");
-
-		if (element) {
-			const text = element.innerText;
-			let GMKey;
-			if (text.includes("Log To File")) {
-				GMKey = "logToFilePackageVersion";
-			} else if (text.includes("System")) {
-				GMKey = "systemPackageVersion";
-			}
-
-			const versionMatch = text.match(/Used version:\s*([\d.]+)/);
-
-			if (versionMatch && GMKey) {
-				// Save the version using GM_setValue if GMKey is defined
-				GM_setValue(GMKey, versionMatch[1]);
-				console.log("Log to file action used version: " + versionMatch[1]);
-			}
-		}
-	}
-
-	function pasteLogToFile(){
-		let selectedLine = Number(getSelectedLineNumber());
-		selectedLine += 1;
-
-		let logToFilePackageVersion = GM_getValue('logToFilePackageVersion');
-		if (logToFilePackageVersion == null || logToFilePackageVersion.trim() === ""){
-			logToFilePackageVersion = "3.8.0";
-		}
-
-		let systemPackageVersion = GM_getValue('systemPackageVersion');
-		if (systemPackageVersion == null || systemPackageVersion.trim() === ""){
-			systemPackageVersion = "3.14.0";
-		}
-
-		let logJsonData = {
-		  "uid": "🔥🔥🔥",
-		  "sourceFileId": "",
-		  "sourceWorkspaceName": "private",
-		  "nodes": [
-			{
-			  "uid": "7b44b830-ce6e-4bc8-b95e-f42bfb84e9a3",
-			  "commandName": "logToFile",
-			  "packageName": "LogToFile",
-			  "disabled": false,
-			  "attributes": [
-				{
-				  "name": "filePath",
-				  "value": {
-					"type": "FILE",
-					"expression": "file://$iDictConfig{vBaseInstancia}$$iDictConfig{vArchivoLog}$"
-				  }
-				},
-				{
-				  "name": "logContent",
-				  "value": {
-					"type": "STRING",
-					"expression": "Task:$System:AATaskName$ | User: $System:AATaskExecutor{Executor_UserName}$ | Line: " + selectedLine + " | "
-				  }
-				},
-				{
-				  "name": "appendTimestamp",
-				  "value": {
-					"type": "BOOLEAN",
-					"boolean": true
-				  }
-				},
-				{
-				  "name": "logOption",
-				  "value": {
-					"type": "STRING",
-					"string": "APPEND_FILE"
-				  }
-				},
-				{
-				  "name": "encodingValue",
-				  "value": {
-					"type": "STRING",
-					"string": "ANSI"
-				  }
-				}
-			  ]
-			}
-		  ],
-		  "packages": [
-			{
-			  "name": "LogToFile",
-			  "version": logToFilePackageVersion
-			},
-			{
-			  "name": "System",
-			  "version": systemPackageVersion
-			}
-		  ]
-		};
-
-		GM_setValue('universalClipboard', JSON.stringify(logJsonData));
-		universalPaste();
-
-		setTimeout(setGMPackageUsedVersionFromErrorMessage, 1000);
 	}
 
 	//============ Feat snippets END ============

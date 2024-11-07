@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         AutomationAnywhere sounds
 // @namespace    http://tampermonkey.net/
-// @version      0.0.2
-// @description  Adds a Half-Life button sound to the "RUN" button and plays a sound when an error appears
+// @version      0.0.3
+// @description  Adds a Half-Life button sound to the "RUN" button and plays a sound when an error appears. CR 34.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
 // @icon         https://cdn2.steamgriddb.com/icon/e16e74a63567ecb44ade5c87002bb1d9/32/32x32.png
@@ -22,14 +22,11 @@
 		audio.play();
 	}
 
-	// Function to check for the specific span element with the defined styles
+	// Function to check for the specific span element with the defined classes
 	function checkForErrorBadge() {
-		const spans = document.querySelectorAll('span[style*="--rio-badge-circle-color: var(--color_background_danger);"]');
+		const spans = document.querySelectorAll('span.rio-icon.rio-icon--icon_exclamation-mark--internal-use');
 		spans.forEach((span) => {
-			const spanStyles = '--rio-badge-circle-color: var(--color_background_danger); --rio-badge-content-color: var(--color_icon_neutral_inverse); --rio-badge-content-translate-y: 6.5%; --rio-badge-size: 20px;';
-
-			// Check if the span has the target styles and hasn't already triggered the sound
-			if (span.style.cssText.includes(spanStyles) && !triggeredBadges.has(span)) {
+			if (!triggeredBadges.has(span)) {
 				console.log("Error badge found!");
 				playErrorSound();
 				triggeredBadges.add(span); // Mark this span as handled
@@ -38,7 +35,7 @@
 	}
 
 	// Set up a MutationObserver to monitor changes in the DOM
-	const observer = new MutationObserver(function (mutationsList, observer) {
+	const observer = new MutationObserver(function (mutationsList) {
 		mutationsList.forEach((mutation) => {
 			if (mutation.type === 'childList' || mutation.type === 'attributes') {
 				checkForErrorBadge(); // Check when DOM changes occur
@@ -52,7 +49,6 @@
 		subtree: true,   // Observe all descendants
 		attributes: true // Observe attribute changes
 	});
-
 
 	//============ RUN button sounds ============
 	// Define buttons data

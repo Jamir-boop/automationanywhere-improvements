@@ -2,7 +2,7 @@
 // @name         AutomationAnywhere sounds
 // @namespace    http://tampermonkey.net/
 // @version      0.0.3
-// @description  Adds a Half-Life button sound to the "RUN" button and plays a sound when an error appears. CR 34.0.0
+// @description  Adds Half-Life sounds to the "RUN" button and plays a sounds when an error appears. Working at CR Version 34.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
 // @icon         https://cdn2.steamgriddb.com/icon/e16e74a63567ecb44ade5c87002bb1d9/32/32x32.png

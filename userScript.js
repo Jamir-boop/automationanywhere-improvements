@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.4.2
-// @description  Enhanced Automation Anywhere developer experience. Working at CR Version 33.0.0
+// @version      0.4.3
+// @description  Enhanced Automation Anywhere developer experience. Working at CR Version 34.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
 // @icon         https://cmpc-1dev.my.automationanywhere.digital/favicon.ico
@@ -350,27 +350,16 @@
 			?.click();
 	}
 
-	function deleteUnusedVariables() {
-		const state = checkPaletteState();
+	async function deleteUnusedVariables() {
+		showVariables();
 
-		if (state === "closed") {
-			toogleToolbar(); // Open the toolbar if it's closed
-		}
-		const accordion = document.querySelector(
-			"div.editor-palette__accordion:nth-child(1)",
-		);
-		const addButton = accordion.querySelector(
-			"header:nth-child(1) button:nth-child(1)",
-		);
-		addButton.click();
-		const menuButton = document.querySelector(
-			"button.action-bar__item--is_menu:nth-child(5)",
-		);
-		menuButton.click();
-		const deleteButton = document.querySelector(
-			"button.rio-focus--inset_4px:nth-child(2)",
-		);
-		deleteButton.click();
+		await new Promise(resolve => setTimeout(resolve, 1000));
+		let dropdownMenu = document.querySelector("button.action-bar__item--is_menu:nth-child(5)");
+		dropdownMenu.click();
+
+		await new Promise(resolve => setTimeout(resolve, 1000));
+		let duvButton = document.querySelector(".dropdown-options.g-scroller button.rio-focus--inset_4px:nth-child(2)");
+		duvButton.click();
 	}
 
 	function openLinkInNewTab(url) {

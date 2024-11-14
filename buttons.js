@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AutomationAnywhere sounds
 // @namespace    http://tampermonkey.net/
-// @version      0.0.4
+// @version      0.0.5
 // @description  Adds Half-Life sounds to the "RUN" button and plays a sounds when an error appears. Working at CR Version 34.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
@@ -25,14 +25,21 @@
 
 	// Function to check for the specific span element with the defined classes
 	function checkForErrorBadge() {
-		const spans = document.querySelectorAll('span.rio-icon.rio-icon--icon_exclamation-mark--internal-use');
-		spans.forEach((span) => {
-			if (!triggeredBadges.has(span)) {
-				console.log("Error badge found!");
-				playErrorSound();
-				triggeredBadges.add(span); // Mark this span as handled
-			}
-		});
+		// Check if the error modal exists
+		const errorModal = document.querySelector('.modal--theme_error');
+
+		if (errorModal) {
+			// Find all spans with the specified classes
+			const spans = document.querySelectorAll('span.rio-icon.rio-icon--icon_exclamation-mark--internal-use');
+
+			spans.forEach((span) => {
+				if (!triggeredBadges.has(span)) {
+					console.log("Error badge and error modal found!");
+					playErrorSound();
+					triggeredBadges.add(span); // Mark this span as handled
+				}
+			});
+		}
 	}
 
 	// Set up a MutationObserver to monitor changes in the DOM
@@ -47,7 +54,7 @@
 	// Start observing the document body for changes
 	observer.observe(document.body, {
 		childList: true, // Observe direct children changes
-		subtree: true,   // Observe all descendants
+		subtree: true, // Observe all descendants
 		attributes: true // Observe attribute changes
 	});
 

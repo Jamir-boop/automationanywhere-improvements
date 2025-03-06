@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.12
+@version        0.1.13
 @description    Font size customization for automationanywhere.
 @author         Jamir-boop
 @preprocessor   stylus
@@ -302,6 +302,10 @@ normalFontSize = .75rem
 	.main-layout__authentication__wrapper
 		customGradientBackground()
 
+	// hide banner alert on firefox
+	header.main-layout__alert-banner
+		display: none;
+
 @-moz-document regexp("^(?!.*home).*automationanywhere\\.digital.*?folders.*$")
 
 	if foldersStyle
@@ -314,7 +318,7 @@ normalFontSize = .75rem
 				overflow: unset
 
 			.folder-list__items
-					max-height: 96vh
+					max-height: 100vh
 					overflow-y: auto
 					position: sticky
 					top: 10px

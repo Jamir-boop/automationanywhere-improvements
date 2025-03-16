@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.15
+@version        0.1.16
 @description    Font size customization for automationanywhere CR 36.0.0
 @author         jamir-boop
 @preprocessor   stylus
@@ -97,6 +97,17 @@ normalFontSize = .75rem
 	.editor-palette-item__child--is_draggable:active
 		cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAAAyAAAAMgAY/rnrQAAAAd0SU1FB+gEEBIlOqIHvFsAAAABb3JOVAHPoneaAAABbklEQVQ4y2NgGAXkAcY3Pd9+/vzzIvWe+mMZBka8aj8mfP7y/c+73yL/df/f+vXw66ef9zMYWHFqCmX79NXoP9v/2f8ZgHA9EGv9//grIzhCCqum67xnVT7+AikNAGuIAJN3/j34+epzTQKDCAMTirvPSv34+fnnu78gRTxgpVxg0hiIA/9/+MWQxCCGrIH1Vs/cn3z/34EVoUO2/9/+MpQwSCNrYH/91vg/Xg2laBq+/2H7z/6/FSgt+l8YCCWAWPC/NJDkwaqBDaQBYp4LUKPzfw8g6fDf5z/HfwusGli//xEAKgFB3v/uQFP5gCQ30A63/5z/+bFpeHI/7L8kDqj5/+NvdA1Ml5uO/bYERhQ2WPf//GuGAgYplHiIkj+x/+OfZ7/A8Pfz3y+A8OXvV2D47HvEIgZ/BgHUiGZiEDeLNe0zmK47DQS1pmpN1Z6iDoKTeVsYIoHmM6OnDSYGdgYeBl4skIeBAzVhDCoAAKkBAU33aVt8AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDI0LTA0LTE2VDE4OjM3OjU4KzAwOjAwql9V1wAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyNC0wNC0xNlQxODozNzo1NyswMDowMC1KnYIAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjQtMDQtMTZUMTg6Mzc6NTgrMDA6MDCMF8y0AAAAAElFTkSuQmCC') 10 10, grab !important
 
+	// Close button change the white bg to the same of run button
+	button[name="close"]
+	.command-button
+			background: transparent !important
+			&:hover
+					background: var(--color_background_interactive_whisper_hover) !important
+
+	.loadable__overlay
+		customGradientBackground()
+
+
 	if fontStyle
 				.editor-page__body *:not(span):not(button):not(.field-label__help):not(.help-content .taskbot-node-details__description):not(.taskbot-canvas-list-node__number)
 						font-size: inputFontSize px !important
@@ -139,21 +150,11 @@ normalFontSize = .75rem
 				.editor-details__header
 					background: rgb(255,255,255);
 					background: linear-gradient(90deg, rgba(255,255,255,1) 1%, rgba(255,255,255,0) 100%);
+
 	if editorTabsButtons
 			div.editortabs:nth-child(1) > button:nth-child(1),
 			div.editortabs:nth-child(1) > button:nth-child(3)
 				display: none
-
-		// Close button change the white bg to the same of run button
-		button[name="close"]
-		.command-button
-				background: transparent !important
-				&:hover
-						background: var(--color_background_interactive_whisper_hover) !important
-				//color: red !important
-
-		.loadable__overlay
-			customGradientBackground()
 
 	if runButton
 			button[aria-label="Run"][name="run"]
@@ -255,6 +256,9 @@ normalFontSize = .75rem
 				scrollbar-width: none // For Firefox
 			&::-webkit-scrollbar
 				display: none // For Chrome, Safari, and Opera
+		&-section__header-actions
+			z-index: 999
+			margin-top: 45px
 
 	if customPaletteButtons
 		// Hides the non active palettes

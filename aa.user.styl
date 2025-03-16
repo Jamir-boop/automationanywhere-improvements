@@ -1,18 +1,19 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.13
-@description    Font size customization for automationanywhere.
-@author         Jamir-boop
+@version        0.1.15
+@description    Font size customization for automationanywhere CR 36.0.0
+@author         jamir-boop
 @preprocessor   stylus
 
 @var checkbox customPaletteButtons "Activate this if using userJS ⚙" 0
 @var checkbox runButton "RUN button style 🔥" 0
 @var checkbox pathFinder "Hide sidebar" 0
 @var checkbox bgStyle "Background" 1
-@var checkbox fontStyle "Font" 0
+@var checkbox fontStyle "Bigger font" 0
 @var checkbox loadingCat "Loading cat 🐈" 0
 @var checkbox foldersStyle "Folders 📈" 0
+@var checkbox editorTabsButtons "Hide editor tabs button (Flow & Dual)" 1
 @var checkbox dialogStyle "Bot running dialog to bottom left" 0
 @var color    backgroundColor3  "Gradient 1"   rgba(255, 223, 85, .2)
 @var color    backgroundColor2  "Gradient 2"   rgba(255, 179, 71, .2)
@@ -75,13 +76,6 @@ cursiveCascadiaFont()
 		80%
 				transform: translateX(shakeSize)
 
-@keyframes flip
-		from
-				transform: rotateY(0)
-
-		to
-				transform: rotateY(360deg)
-
 @keyframes pulse
 		0%
 				transform: scale(1)
@@ -91,18 +85,6 @@ cursiveCascadiaFont()
 
 		100%
 				transform: scale(1)
-
-@keyframes crazyAnimation
-	0%
-		transform: scale(1) rotate(0deg) skew(0deg, 0deg)
-		background-color: #FF0000
-		opacity: 1
-
-@keyframes rotateAnimation
-	from
-		transform: rotate(0deg)
-	to
-		transform: rotate(360deg)
 
 // Global variables
 generalFontSize = 1rem
@@ -147,13 +129,20 @@ normalFontSize = .75rem
 				.editor-layout__right,
 				.editor-layout__details,
 				.editor-details__header::after,
-				.editor-details__header,
 				.page
 						background: transparent !important
 
 				.editor-page,
 				.main-layout__content // folder background
 						customGradientBackground()
+
+				.editor-details__header
+					background: rgb(255,255,255);
+					background: linear-gradient(90deg, rgba(255,255,255,1) 1%, rgba(255,255,255,0) 100%);
+	if editorTabsButtons
+			div.editortabs:nth-child(1) > button:nth-child(1),
+			div.editortabs:nth-child(1) > button:nth-child(3)
+				display: none
 
 		// Close button change the white bg to the same of run button
 		button[name="close"]
@@ -175,10 +164,7 @@ normalFontSize = .75rem
 					animation: pulse 3s ease-in-out infinite !important
 					cursiveCascadiaFont()
 					&:hover
-							//background: white
 							animation: shakeSideToSide 1s ease-in-out infinite !important
-							//shakeSideToSide
-							//crazyAnimation
 							transform: scale(1.15)
 					.clipped-text
 						font-weight: bold
@@ -270,7 +256,6 @@ normalFontSize = .75rem
 			&::-webkit-scrollbar
 				display: none // For Chrome, Safari, and Opera
 
-
 	if customPaletteButtons
 		// Hides the non active palettes
 		.editor-palette__accordion--is_active
@@ -302,7 +287,7 @@ normalFontSize = .75rem
 	.main-layout__authentication__wrapper
 		customGradientBackground()
 
-@-moz-document regexp("^(?!.*home).*automationanywhere\\.digital.*?folders.*$")
+@-moz-document regexp(".*automationanywhere\\.digital.*?folders.*$")
 
 	if foldersStyle
 			adjustDatatableColumns()
@@ -325,4 +310,7 @@ normalFontSize = .75rem
 			.pagetitle-label
 				cursiveCascadiaFont()
 
-
+@-moz-document regexp(".*automationanywhere\\.digital.*process.*$")
+	// fixed 'browse' button overlaping some stuff in the process editor
+	.editor-init-form-property .editor-init-form-property__path-field .command-button
+		position: relative

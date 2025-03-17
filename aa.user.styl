@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.16
+@version        0.1.17
 @description    Font size customization for automationanywhere CR 36.0.0
 @author         jamir-boop
 @preprocessor   stylus
@@ -13,7 +13,7 @@
 @var checkbox fontStyle "Bigger font" 0
 @var checkbox loadingCat "Loading cat 🐈" 0
 @var checkbox foldersStyle "Folders 📈" 0
-@var checkbox editorTabsButtons "Hide editor tabs button (Flow & Dual)" 1
+@var checkbox editorTabsButtons "Hide editor tabs button (Flow & List & Dual)" 1
 @var checkbox dialogStyle "Bot running dialog to bottom left" 0
 @var color    backgroundColor3  "Gradient 1"   rgba(255, 223, 85, .2)
 @var color    backgroundColor2  "Gradient 2"   rgba(255, 179, 71, .2)
@@ -152,8 +152,7 @@ normalFontSize = .75rem
 					background: linear-gradient(90deg, rgba(255,255,255,1) 1%, rgba(255,255,255,0) 100%);
 
 	if editorTabsButtons
-			div.editortabs:nth-child(1) > button:nth-child(1),
-			div.editortabs:nth-child(1) > button:nth-child(3)
+			div.editortabs
 				display: none
 
 	if runButton

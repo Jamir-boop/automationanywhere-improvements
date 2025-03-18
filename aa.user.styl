@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.18
+@version        0.1.19
 @description    Font size customization for automationanywhere CR 36.0.0
 @author         jamir-boop
 @preprocessor   stylus
@@ -26,16 +26,6 @@
 @var color    backgroundColor1  "Gradient 3"   rgba(255, 105, 97, .2)
 
 ==/UserStyle== */
-
-// Mixin for the folders containing task bots
-adjustDatatableColumns()
-	.datatable-header-container:not(.modal-form-content .datatable-header-container),
-	.datatable-row:not(.modal-form-content .datatable-row)
-		.datatable-column:nth-child(4):not(.modal-form-content .datatable-column),
-		.datatable-column:nth-child(6):not(.modal-form-content .datatable-column),
-		.datatable-column:nth-child(7):not(.modal-form-content .datatable-column)
-			display: none !important
-			background: red
 
 // Common adjustments for datatable columns, varying by context
 datatableCommonAdjustments(widthValue)
@@ -302,7 +292,6 @@ normalFontSize = .75rem
 @-moz-document regexp(".*automationanywhere\\.digital.*?folders.*$")
 
 	if foldersStyle
-			adjustDatatableColumns()
 			datatableCommonAdjustments(600px)
 
 			// Folders menu

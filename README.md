@@ -5,11 +5,14 @@
 </div>
 
 Improvements to enhance the Automation Anywhere development platform include an upgraded user interface and a suite of features accessible via a command palette, along with fixes for several annoyances.
-##### Tested and working on AutomationAnywhere Control Room 31.0.0 to 34.0.0
+✅ **Tested and working on AutomationAnywhere Control Room 31.0.0 to 36.0.0**
 
-## Features
+---
 
-### aa.user.styl
+<details>
+<summary>✨ <strong>Features</strong></summary>
+
+### `aa.user.styl`
 <img src="https://i.ibb.co/W2bxLKX/image.png" alt="image" border="0" width="50%">
 <br>
 
@@ -29,52 +32,111 @@ Improvements to enhance the Automation Anywhere development platform include an 
 - Adds a colorful background.
 - And much more...
 
-### userScript.js
-https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/f7c6eec2-409f-495d-88e3-028e5b6d4593
+---
 
-The script adds a command palette to Automation Anywhere, which can be invoked using the `Alt + P` key combination. The command palette provides a set of commands that can be used to perform various actions on the Automation Anywhere platform. The commands include:
+### `userScript.js`
 
-- `a`, `addaction`, `add action`, `action`: Opens and focuses the actions input field.
-- `adv`, `addvar`, `add variable`: Adds a new variable.
-- `v`, `showvars`, `list variables`, `variables`: Shows all variables.
-- `duv`, `delete unused`, `remove unused variables`: Deletes unused variables.
-- `hd`, `hide dialog`, `close dialog`: Hides the dialog that appears when a bot is running.
-- `up`, `updatepkgs`, `upgrade packages`: Updates all packages.
-- `fa`, `fold all`, `collapse all`: Folds all sections in the code.
-- `p`, `private`, `private bots`: Redirects to the private bots folder.
-- `help`, `h`, `show help`: Displays help information for available commands.
+🎥 [Demo Video](https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/f7c6eec2-409f-495d-88e3-028e5b6d4593)
 
-If an invalid command is entered, a help message is displayed with a list of valid commands.
+This script enhances Automation Anywhere by adding a command palette (`Alt + P`) that lets you execute helpful developer commands instantly.
 
-## Installation
-These are a userScript (`userScript.js`) and a userStyle (`aa.user.styl`), designed to function either together or independently. The `userScript.js` operates within the Tampermonkey extension, whereas the `aa.user.styl` is executed through the Stylus extension.
+#### ✅ Command Palette Commands
 
-### Considerations
-- Ensure the control room is set to English to maintain the correct functionality of script selectors.
-- Optionally, consider installing the [Casacadia Code](https://github.com/microsoft/cascadia-code) font on your system.
+Use the command palette to run any of the following:
 
-1. Install the [Tampermonkey extension](https://www.tampermonkey.net) on your browser.
-2. Install the [userScript file](https://update.greasyfork.org/scripts/477891/Better%20AutomationAnywhere.user.js).
-3. Install the [Stylus extension](https://github.com/openstyles/stylus) on yout browser
-4. Install the [userStyle](https://github.com/Jamir-boop/automationanywhere-improvements/raw/main/aa.user.styl) file.
+- `a`, `addaction`, `add action`: Open the "Actions" section in the palette.
+- `adv`, `addvar`, `add variable`: Add a new variable.
+- `v`, `showvars`, `list variables`, `variables`: Show the variables panel.
+- `duv`, `delete unused`: Remove unused variables.
+- `p`, `private`, `private bots`: Go to your Private Bots folder.
+- `historical`, `activity historical`: Open Activity History.
+- `audit`, `audit log`: Open the Audit Log.
+- `:25`: Scroll to line number 25 (or any number).
+- `help`, `show help`: Show this command reference.
 
-## Usage
+#### ⌨️ Keyboard Shortcuts
 
-1. Navigate to the Automation Anywhere platform.
-2. Press `Alt + P` to invoke the command palette.
-3. Enter a command or `help` for a list of commands.
-4. Press `Enter` to execute the command.
+- `Alt + P`: Toggle the command palette.
+- `Alt + V`: Show variables.
+- `Alt + A`: Show actions.
+- `Ctrl + D`: Toggle the right-side toolbar.
 
-## Why are there two separate files with different extensions?
+#### 📋 Clipboard Slots (Universal Copy/Paste)
 
-I'm aware that the presence of two files across different formats may seem unnecessary and potentially confusing.
+Using the Tampermonkey menu, you can copy/paste bot actions between sessions and even across control rooms:
 
-This decision was made considering the fact that there's no need to reinvent the wheel by creating a way to ship the entire `aa.user.styl` file, which was written in Stylus syntax. Both Stylus and Tampermonkey frameworks are proficient in simplifying the development work, expediting the process. Please note that I'm open to options that can streamline the installation process.
+- `Copy to Slot 1/2/3`
+- `Paste from Slot 1/2/3`
 
-## License
+Rocket icon buttons will also appear in the top toolbar for faster access.
 
-This project is licensed under the MIT License.
+</details>
 
-## Author
+---
 
-This script was created by jamir-boop.
+<details>
+<summary>⚙️ <strong>Installation</strong></summary>
+
+These are a **userScript** (`userScript.js`) and a **userStyle** (`aa.user.styl`) that can work together or independently.
+
+- `userScript.js`: Use with [Tampermonkey](https://www.tampermonkey.net)
+- `aa.user.styl`: Use with [Stylus](https://add0n.com/stylus.html)
+
+### 1. Install the Browser Extensions
+
+- Install **[Tampermonkey](https://www.tampermonkey.net)**.
+- Install **[Stylus](https://add0n.com/stylus.html)**.
+
+### 2. Add the Scripts
+
+- **[Install the userScript.js](https://update.greasyfork.org/scripts/477891/Better%20AutomationAnywhere.user.js)** via GreasyFork
+- **[Install the Stylus Theme](https://github.com/Jamir-boop/automationanywhere-improvements/raw/main/aa.user.styl)** via Stylus
+
+> ✅ Make sure your Control Room language is set to **English** for selector compatibility.
+
+</details>
+
+---
+
+<details>
+<summary>🚀 <strong>Usage</strong></summary>
+
+1. Open Automation Anywhere.
+2. Press `Alt + P` to open the palette.
+3. Start typing a command or `help` to see options.
+4. Hit `Enter` to execute.
+5. Optionally, right-click Tampermonkey → choose a clipboard slot to copy or paste.
+
+</details>
+
+---
+
+<details>
+<summary>🧠 <strong>Why are there two files?</strong></summary>
+
+This project is split into:
+- A **userScript** that runs JavaScript features via Tampermonkey.
+- A **userStyle** that changes CSS and UI styles via Stylus.
+
+Keeping them separate makes installation modular and leverages the best tool for each job without bloating a single script.
+
+</details>
+
+---
+
+<details>
+<summary>📄 <strong>License</strong></summary>
+
+MIT License
+
+</details>
+
+---
+
+<details>
+<summary>👤 <strong>Author</strong></summary>
+
+Created by **jamir-boop**
+GitHub: [@Jamir-boop](https://github.com/Jamir-boop)
+
+</details>

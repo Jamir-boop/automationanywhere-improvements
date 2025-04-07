@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           AutomationAnywhere - UI adjustments
 @namespace      Jamir-boop
-@version        0.1.22
+@version        0.1.23
 @description    Font size customization for automationanywhere CR 36.0.0
 @author         jamir-boop
 @preprocessor   stylus
@@ -235,6 +235,35 @@ normalFontSize = .75rem
 			box-sizing: content-box
 			line-height: normal
 
+	// this works with userScript file
+	.taskbot-canvas-list-node__number.line-highlighted
+		&::after
+			background: #ffe600 !important
+			width: 300px
+			content: ''
+			display: block
+			position: absolute
+			left: 100%
+			top: 50%
+			transform: translateY(-50%)
+			box-sizing: content-box
+			line-height: normal
+
+		&::before
+			content: ''
+			display: block
+			width: 300px
+			height: 2px
+			background: #00000080 !important
+			position: absolute
+			left: 100%
+			top: 50%
+			transform: translateY(-50%)
+			box-sizing: content-box
+			line-height: normal
+
+		transition: width 2s ease
+
 	// Actions and variables sidebar
 	// hide the contents of the non active toolbars
 	.editor-palette__accordion:not(.editor-palette__accordion--is_active)
@@ -314,7 +343,7 @@ normalFontSize = .75rem
 	.pathfinder--is_collapsed,
 	.main-layout__navigation
 		width: 10px
-		transition: width 1s ease
+		transition: width 0.1s ease
 
 	.pathfinder--is_collapsed:hover,
 	.main-layout__navigation:hover

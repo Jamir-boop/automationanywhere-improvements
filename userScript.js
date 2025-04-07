@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.4.9
+// @version      0.4.10
 // @description  Enhanced Automation Anywhere developer experience. Working at CR Version 36.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
@@ -388,23 +388,6 @@
 	}
 
 	function scrollToLineNumber(lineNumber) {
-		// Inject highlight styles if not already present
-		if (!document.getElementById('highlight-line-style')) {
-			const style = document.createElement('style');
-			style.id = 'highlight-line-style';
-			style.textContent = `
-				.highlight-line {
-					background-color: yellow;
-					transition: background-color 0.5s ease;
-				}
-				.highlight-line::after {
-					background-color: yellow !important;
-					transition: background-color 0.5s ease;
-				}
-			`;
-			document.head.appendChild(style);
-		}
-
 		const lineElements = document.querySelectorAll('.taskbot-canvas-list-node > .taskbot-canvas-list-node__number');
 
 		if (lineNumber < 1 || lineNumber > lineElements.length) {
@@ -414,15 +397,16 @@
 
 		const targetElement = lineElements[lineNumber - 1];
 
-		// Scroll smoothly to the element
+		// Remove previous highlights
+		document.querySelectorAll('.line-highlighted').forEach(el => el.classList.remove('line-highlighted'));
+
+		// Scroll and add highlight class
 		targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		targetElement.classList.add('line-highlighted');
 
-		// Add highlight class
-		targetElement.classList.add('highlight-line');
-
-		// Remove the highlight after a short delay
+		// Remove highlight after a delay
 		setTimeout(() => {
-			targetElement.classList.remove('highlight-line');
+			targetElement.classList.remove('line-highlighted');
 		}, 2000);
 	}
 

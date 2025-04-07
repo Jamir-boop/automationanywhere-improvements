@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.4.5
+// @version      0.4.7
 // @description  Enhanced Automation Anywhere developer experience. Working at CR Version 36.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
@@ -43,11 +43,6 @@
 			action: deleteUnusedVariables,
 			aliases: ["duv", "delete unused", "remove unused variables"],
 			description: "Shows dialog to select and delete unused variables",
-		},
-		updatePackages: {
-			action: updatePackages,
-			aliases: ["up", "updatepkgs", "upgrade packages"],
-			description: "Opens the packages menu and unfolds the updatable items",
 		},
 		redirectToPrivateRepository: {
 			action: redirectToPrivateRepository,
@@ -298,42 +293,44 @@
 		} catch {}
 	}
 
-	function addVariable() {
-		const state = checkPaletteState();
-
-		if (state === "closed") {
-			toogleToolbar(); // Open the toolbar if it's closed
+	async function addVariable() {
+		// Ensure toolbar is open
+		if (checkPaletteState() === "closed") {
+			toogleToolbar();
+			await new Promise(resolve => setTimeout(resolve, 800)); // wait for toolbar animation
 		}
 
-		try {
-			const accordion = document.querySelector(
-				"div.editor-palette__accordion:nth-child(1)",
-			);
-			const addButton = accordion.querySelector(
-				"header:nth-child(1) button:nth-child(1)",
-			);
+		// Click the "Add Variable" button
+		const addButton = document.querySelector('div.editor-palette__accordion header button');
+		if (addButton) {
 			addButton.click();
-		} catch (error) {}
+		} else {
+			console.warn("Add Variable button not found");
+			return;
+		}
 
-		try {
-			const cancelButton = document.querySelector(
-				"div.editor-palette-search__cancel button",
-			);
-			cancelButton.click();
-		} catch (error) {}
+		// Wait a bit for dialog to appear
+		await new Promise(resolve => setTimeout(resolve, 500));
 
-		try {
-			const createButton = document.querySelector('button[name="create"]');
+		// Click the "Create" button if it's there
+		const createButton = document.querySelector('button[name="create"]');
+		if (createButton) {
 			createButton.click();
-		} catch (error) {}
+		} else {
+			console.warn("Create button not found");
+			return;
+		}
 
-		try {
-			const confirmButton = document.querySelector(
-				"div.action-bar--theme_default:nth-child(1) > button:nth-child(2)",
-			);
+		// Wait for the confirm bar to appear and click confirm
+		await new Promise(resolve => setTimeout(resolve, 500));
+		const confirmButton = document.querySelector('div.action-bar--theme_default button:nth-child(2)');
+		if (confirmButton) {
 			confirmButton.click();
-		} catch (error) {}
+		} else {
+			console.warn("Confirm button not found");
+		}
 	}
+
 
 	async function showVariables() {
 		const state = checkPaletteState();
@@ -465,8 +462,11 @@
 
 		for (let command in commandsWithAliases) {
 			const { aliases, description } = commandsWithAliases[command];
-			helpContent += `<li><b>${aliases.join(', ')}:</b> ${description}</li>`;
+			helpContent += `<li><b>${aliases.join(', ')}</b>: ${description}</li>`;
 		}
+
+		// Include special syntax info
+		helpContent += `<li><b>:<i>line</i></b>: Scrolls to a specific line number (e.g. <code>:25</code>)</li>`;
 
 		helpContent += "</ul>";
 
@@ -495,12 +495,11 @@
 		modalOverlay.appendChild(modal);
 		document.body.appendChild(modalOverlay);
 
-		// Close modal
+		// Close modal logic
 		function closeModal() {
 			document.body.removeChild(modalOverlay);
 		}
 
-		// Close logic
 		modalOverlay.addEventListener('click', (e) => {
 			if (e.target === modalOverlay) {
 				closeModal();
@@ -515,58 +514,8 @@
 
 		closeButton.addEventListener('click', closeModal);
 	}
-
 	//============ Command palette stuff END ============
 
-	//============ Feat updatePackages stuff START ============
-	function updatePackages() {
-		document
-			.querySelector(".rio-icon--icon_three-vertical-dots-meatball-menu")
-			.click();
-
-		function clickSpanWithText(text) {
-			var spans = document.querySelectorAll(
-				"span.clipped-text.clipped-text--no_wrap.dropdown-option-label span.clipped-text__string",
-			);
-			for (var i = 0; i < spans.length; i++) {
-				if (spans[i].textContent.toLowerCase().includes(text.toLowerCase())) {
-					spans[i].click();
-					break;
-				}
-			}
-		}
-
-		// Call the function with "package"
-		clickSpanWithText("packages");
-
-		document
-			.querySelectorAll('.package-resource__title[title*="not default"]')
-			.forEach((span) => {
-				// Simulate a click on the span
-				span.click();
-
-				// Wait for the DOM changes to occur after the click, then perform further actions
-				setTimeout(() => {
-					let versionCell = span.querySelector(
-						".taskbot-edit-page__package__versions__cell.taskbot-edit-page__package__versions__cell--select",
-					);
-					if (versionCell) {
-						versionCell.click();
-
-						// Wait for the dropdown to appear, then perform further actions
-						setTimeout(() => {
-							let option = versionCell.querySelector(
-								'.choice-input-dropdown__options .choice-input-dropdown__option[role="option"]',
-							);
-							if (option) {
-								option.click();
-							}
-						}, 5000); // Adjust the timeout as needed
-					}
-				}, 3000); // Adjust the timeout as needed
-			});
-	}
-	//============ Feat updatePackages stuff END ============
 	//============ Feat snippets START ============
 	function generateEmojiString() {
 		const emojis = [
@@ -972,12 +921,34 @@
 		redirectToPath(auditLog);
 	}
 
-	// This function removes the inline 'width' style from .main-layout__navigation
-	// That inline style overrides any CSS, so we need to remove it to let Stylus take control
+	// This function ensures the left navigation panel is collapsed and removes any inline width
+	// - If already collapsed (.pathfinder--is_collapsed exists), it just removes the inline width
+	// - If not collapsed, it clicks the "Collapse" button and removes the width after it's collapsed
+
 	function removeInlineWidth() {
 		const nav = document.querySelector('.main-layout__navigation');
-		if (nav?.style?.width) {
-			nav.style.removeProperty('width');
+		const pathfinderCollapsed = document.querySelector('.pathfinder--is_collapsed');
+
+		// If already collapsed, just remove inline width
+		if (pathfinderCollapsed) {
+			if (nav?.style?.width) {
+				nav.style.removeProperty('width');
+			}
+			return;
+		}
+
+		// If not collapsed, try to collapse it
+		const collapseButton = document.querySelector('button[aria-label="Collapse"]');
+		if (collapseButton) {
+			collapseButton.click();
+
+			setTimeout(() => {
+				if (nav?.style?.width) {
+					nav.style.removeProperty('width');
+				}
+			}, 500);
+		} else {
+			console.warn('Collapse button not found');
 		}
 	}
 

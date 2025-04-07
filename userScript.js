@@ -461,7 +461,7 @@
 		let helpContent = "<h3>List of Commands:</h3><ul>";
 
 		for (let command in commandsWithAliases) {
-			const { aliases, description } = commandsWithAliases[command];
+			const { aliases, description } =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 commandsWithAliases[command];
 			helpContent += `<li><b>${aliases.join(', ')}</b>: ${description}</li>`;
 		}
 

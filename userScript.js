@@ -324,17 +324,24 @@
 		} catch (error) {}
 	}
 
-	function showVariables() {
+	async function showVariables() {
 		const state = checkPaletteState();
 
 		if (state === "closed") {
-			toogleToolbar(); // Open the toolbar if it's closed
+			toogleToolbar();
+			await new Promise(r => setTimeout(r, 1000)); // wait for the toolbar to open
 		}
-		document
-			.querySelector(
-				'span.clipped-text.clipped-text--no_wrap.editor-palette-section__header-title[title="Variables"]',
-			)
-			?.click();
+
+		for (let i = 0; i < 10; i++) {
+			const el = document.querySelector(
+				'span.clipped-text.clipped-text--no_wrap.editor-palette-section__header-title[title="Variables"]'
+			);
+			if (el) {
+				el.click();
+				return;
+			}
+			await new Promise(r => setTimeout(r, 300)); // retry every 300ms
+		}
 	}
 
 	function showTriggers() {
@@ -353,11 +360,11 @@
 	async function deleteUnusedVariables() {
 		showVariables();
 
-		await new Promise(resolve => setTimeout(resolve, 1000));
+		await new Promise(resolve => setTimeout(resolve, 2000));
 		let dropdownMenu = document.querySelector("button.action-bar__item--is_menu:nth-child(5)");
 		dropdownMenu.click();
 
-		await new Promise(resolve => setTimeout(resolve, 1000));
+		await new Promise(resolve => setTimeout(resolve, 2000));
 		let duvButton = document.querySelector(".dropdown-options.g-scroller button.rio-focus--inset_4px:nth-child(2)");
 		duvButton.click();
 	}

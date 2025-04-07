@@ -29,11 +29,6 @@
 
 	// Commands and their aliases mapping to functions
 	const commandsWithAliases = {
-		addAction: {
-			action: addAction,
-			aliases: ["a", "addaction", "add action", "action"],
-			description: "Shows actions in sidebar",
-		},
 		addVariable: {
 			action: addVariable,
 			aliases: ["adv", "addvar", "add variable"],
@@ -54,11 +49,6 @@
 			aliases: ["up", "updatepkgs", "upgrade packages"],
 			description: "Opens the packages menu and unfolds the updatable items",
 		},
-		foldAll: {
-			action: foldAll,
-			aliases: ["fa", "fold all", "collapse all"],
-			description: "Folds all sections in the code",
-		},
 		redirectToPrivateRepository: {
 			action: redirectToPrivateRepository,
 			aliases: ["p", "private", "private bots"],
@@ -67,6 +57,11 @@
 		redirectToActivityHistorical: {
 			action: redirectToActivityHistorical,
 			aliases: ["historical", "history","activity historical"],
+			description: "Redirects to the activities historical tab",
+		},
+		redirectToAuditLog: {
+			action: redirectToAuditLog,
+			aliases: ["audit", "audit log"],
 			description: "Redirects to the activities historical tab",
 		},
 		showHelp: {
@@ -116,10 +111,26 @@
 
 		if (!input) return;
 
+		// Check for ":<number>" syntax to scroll to a line
+		const jumpToLineMatch = input.match(/^:(\d+)$/);
+		if (jumpToLineMatch) {
+			const lineNumber = parseInt(jumpToLineMatch[1], 10);
+			const predictionItem = document.createElement("div");
+			predictionItem.classList.add("command_prediction-item");
+			predictionItem.innerHTML = `<strong>Go to line ${lineNumber}</strong>`;
+			predictionItem.addEventListener("click", () => {
+				scrollToLineNumber(lineNumber);
+				clearPredictions();
+				togglePaletteVisibility();
+			});
+			getCommandPredictions().appendChild(predictionItem);
+			return; // Skip the normal alias match
+		}
+
 		Object.entries(commandsWithAliases).forEach(
 			([commandKey, { action, aliases, description }]) => {
 				const match = aliases.find((alias) =>
-					alias.startsWith(input.toLowerCase()),
+					alias.startsWith(input.toLowerCase())
 				);
 				if (match) {
 					const predictionItem = document.createElement("div");
@@ -132,7 +143,7 @@
 					});
 					getCommandPredictions().appendChild(predictionItem);
 				}
-			},
+			}
 		);
 	}
 
@@ -360,11 +371,11 @@
 	async function deleteUnusedVariables() {
 		showVariables();
 
-		await new Promise(resolve => setTimeout(resolve, 2000));
+		await new Promise(resolve => setTimeout(resolve, 1000));
 		let dropdownMenu = document.querySelector("button.action-bar__item--is_menu:nth-child(5)");
 		dropdownMenu.click();
 
-		await new Promise(resolve => setTimeout(resolve, 2000));
+		await new Promise(resolve => setTimeout(resolve, 1000));
 		let duvButton = document.querySelector(".dropdown-options.g-scroller button.rio-focus--inset_4px:nth-child(2)");
 		duvButton.click();
 	}
@@ -379,14 +390,45 @@
 		}
 	}
 
-	function foldAll() {
-		const folderClicks = document.querySelectorAll(
-			".taskbot-canvas-list-node__collapser",
-		);
-		Array.from(folderClicks)
-			.reverse()
-			.forEach((element) => element.click());
+	function scrollToLineNumber(lineNumber) {
+		// Inject highlight styles if not already present
+		if (!document.getElementById('highlight-line-style')) {
+			const style = document.createElement('style');
+			style.id = 'highlight-line-style';
+			style.textContent = `
+				.highlight-line {
+					background-color: yellow;
+					transition: background-color 0.5s ease;
+				}
+				.highlight-line::after {
+					background-color: yellow !important;
+					transition: background-color 0.5s ease;
+				}
+			`;
+			document.head.appendChild(style);
+		}
+
+		const lineElements = document.querySelectorAll('.taskbot-canvas-list-node > .taskbot-canvas-list-node__number');
+
+		if (lineNumber < 1 || lineNumber > lineElements.length) {
+			console.warn(`Line ${lineNumber} is out of range. Total lines: ${lineElements.length}`);
+			return;
+		}
+
+		const targetElement = lineElements[lineNumber - 1];
+
+		// Scroll smoothly to the element
+		targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+		// Add highlight class
+		targetElement.classList.add('highlight-line');
+
+		// Remove the highlight after a short delay
+		setTimeout(() => {
+			targetElement.classList.remove('highlight-line');
+		}, 2000);
 	}
+
 
 	function showHelp() {
 		// Create modal elements
@@ -394,8 +436,9 @@
 		const modal = document.createElement('div');
 		const modalContent = document.createElement('div');
 		const closeButton = document.createElement('button');
+		const signature = document.createElement('div');
 
-		// Set styles for the modal
+		// Set styles for the modal overlay
 		modalOverlay.style.position = 'fixed';
 		modalOverlay.style.top = '0';
 		modalOverlay.style.left = '0';
@@ -405,10 +448,10 @@
 		modalOverlay.style.display = 'flex';
 		modalOverlay.style.justifyContent = 'center';
 		modalOverlay.style.alignItems = 'center';
-		modalOverlay.style.zIndex = '1000'; // Ensure it appears above other elements
-
+		modalOverlay.style.zIndex = '1000';
 		modalOverlay.style.fontSize = '16px';
 
+		// Modal styling
 		modal.style.backgroundColor = 'white';
 		modal.style.padding = '20px';
 		modal.style.borderRadius = '8px';
@@ -417,7 +460,7 @@
 		modal.style.width = '80%';
 		modal.style.position = 'relative';
 
-		// Build the help content from the commandsWithAliases object
+		// Build the help content
 		let helpContent = "<h3>List of Commands:</h3><ul>";
 
 		for (let command in commandsWithAliases) {
@@ -429,6 +472,7 @@
 
 		modalContent.innerHTML = helpContent;
 
+		// Close button styling
 		closeButton.textContent = 'Close';
 		closeButton.style.marginTop = '10px';
 		closeButton.style.padding = '8px 16px';
@@ -438,34 +482,40 @@
 		closeButton.style.cursor = 'pointer';
 		closeButton.style.borderRadius = '4px';
 
+		// Signature styling
+		signature.innerHTML = `<a href="https://github.com/Jamir-boop/automationanywhere-improvements.git" target="_blank" style="text-decoration: none; color: #888; font-size: 12px;">made by jamir-boop</a>`;
+		signature.style.position = 'absolute';
+		signature.style.bottom = '8px';
+		signature.style.right = '12px';
+
 		// Append elements
 		modal.appendChild(modalContent);
 		modal.appendChild(closeButton);
+		modal.appendChild(signature);
 		modalOverlay.appendChild(modal);
 		document.body.appendChild(modalOverlay);
 
-		// Close function
+		// Close modal
 		function closeModal() {
 			document.body.removeChild(modalOverlay);
 		}
 
-		// Close when clicking outside the modal
+		// Close logic
 		modalOverlay.addEventListener('click', (e) => {
 			if (e.target === modalOverlay) {
 				closeModal();
 			}
 		});
 
-		// Close on Escape key
 		document.addEventListener('keydown', (e) => {
 			if (e.key === 'Escape') {
 				closeModal();
 			}
 		});
 
-		// Close on button click
 		closeButton.addEventListener('click', closeModal);
 	}
+
 	//============ Command palette stuff END ============
 
 	//============ Feat updatePackages stuff START ============
@@ -915,6 +965,22 @@
 		const activityHistoricalPath = '/#/activity/historical/';
 		redirectToPath(activityHistoricalPath);
 	}
+
+	// Function to redirect to the audit log page
+	function redirectToAuditLog() {
+		const auditLog = '/#/audit';
+		redirectToPath(auditLog);
+	}
+
+	// This function removes the inline 'width' style from .main-layout__navigation
+	// That inline style overrides any CSS, so we need to remove it to let Stylus take control
+	function removeInlineWidth() {
+		const nav = document.querySelector('.main-layout__navigation');
+		if (nav?.style?.width) {
+			nav.style.removeProperty('width');
+		}
+	}
+
 	//============ Feat redirect utility END ============
 	//============ Feat insert command palette START ============
 	// Insterts the command palette
@@ -1063,6 +1129,7 @@
 			insertCustomEditorPaletteButtons();
 			setInterval(function () {updateActiveButton();}, 1000);
 			insertUniversalCopyPasteButtons();
+			removeInlineWidth()
 
 			count++;
 			if (count >= 3) {
@@ -1091,6 +1158,7 @@
 			insertCommandPalette();
 			insertCustomEditorPaletteButtons();
 			insertUniversalCopyPasteButtons();
+			removeInlineWidth();
 		}
 	}, 5000);
 

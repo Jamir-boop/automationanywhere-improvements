@@ -124,19 +124,11 @@ Keeping them separate makes installation modular and leverages the best tool for
 
 ---
 
-<details>
-<summary>📄 <strong>License</strong></summary>
+<strong>License</strong>
 
 MIT License
 
-</details>
-
 ---
 
-<details>
-<summary>👤 <strong>Author</strong></summary>
-
-Created by **jamir-boop**
+<strong>Created by **jamir-boop**</strong>
 GitHub: [@Jamir-boop](https://github.com/Jamir-boop)
-
-</details>

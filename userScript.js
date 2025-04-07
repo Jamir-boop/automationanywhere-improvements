@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better AutomationAnywhere
 // @namespace    http://tampermonkey.net/
-// @version      0.4.7
+// @version      0.4.9
 // @description  Enhanced Automation Anywhere developer experience. Working at CR Version 36.0.0
 // @author       jamir-boop
 // @match        *://*.automationanywhere.digital/*
@@ -426,16 +426,13 @@
 		}, 2000);
 	}
 
-
 	function showHelp() {
-		// Create modal elements
 		const modalOverlay = document.createElement('div');
 		const modal = document.createElement('div');
 		const modalContent = document.createElement('div');
 		const closeButton = document.createElement('button');
 		const signature = document.createElement('div');
 
-		// Set styles for the modal overlay
 		modalOverlay.style.position = 'fixed';
 		modalOverlay.style.top = '0';
 		modalOverlay.style.left = '0';
@@ -448,7 +445,6 @@
 		modalOverlay.style.zIndex = '1000';
 		modalOverlay.style.fontSize = '16px';
 
-		// Modal styling
 		modal.style.backgroundColor = 'white';
 		modal.style.padding = '20px';
 		modal.style.borderRadius = '8px';
@@ -457,22 +453,37 @@
 		modal.style.width = '80%';
 		modal.style.position = 'relative';
 
-		// Build the help content
 		let helpContent = "<h3>List of Commands:</h3><ul>";
 
 		for (let command in commandsWithAliases) {
-			const { aliases, description } =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 commandsWithAliases[command];
+			const { aliases, description } = commandsWithAliases[command];
 			helpContent += `<li><b>${aliases.join(', ')}</b>: ${description}</li>`;
 		}
-
-		// Include special syntax info
 		helpContent += `<li><b>:<i>line</i></b>: Scrolls to a specific line number (e.g. <code>:25</code>)</li>`;
-
 		helpContent += "</ul>";
+
+		helpContent += `
+			<h4>Keyboard Shortcuts:</h4>
+			<ul>
+				<li><b>Alt + P</b>: Open the command palette</li>
+				<li><b>Alt + V</b>: Show variables</li>
+				<li><b>Alt + A</b>: Show actions</li>
+			</ul>
+
+			<h4>Clipboard Slots:</h4>
+			<ul>
+				<li>Use the context menu (Tampermonkey menu) to:
+					<ul>
+						<li><code>Copy to Slot 1</code>, <code>Slot 2</code>, <code>Slot 3</code></li>
+						<li><code>Paste from Slot 1</code>, <code>Slot 2</code>, <code>Slot 3</code></li>
+					</ul>
+				</li>
+				<li>You can also use the rocket icons in the top action bar to quickly copy/paste</li>
+			</ul>
+		`;
 
 		modalContent.innerHTML = helpContent;
 
-		// Close button styling
 		closeButton.textContent = 'Close';
 		closeButton.style.marginTop = '10px';
 		closeButton.style.padding = '8px 16px';
@@ -482,20 +493,17 @@
 		closeButton.style.cursor = 'pointer';
 		closeButton.style.borderRadius = '4px';
 
-		// Signature styling
 		signature.innerHTML = `<a href="https://github.com/Jamir-boop/automationanywhere-improvements.git" target="_blank" style="text-decoration: none; color: #888; font-size: 12px;">made by jamir-boop</a>`;
 		signature.style.position = 'absolute';
 		signature.style.bottom = '8px';
 		signature.style.right = '12px';
 
-		// Append elements
 		modal.appendChild(modalContent);
 		modal.appendChild(closeButton);
 		modal.appendChild(signature);
 		modalOverlay.appendChild(modal);
 		document.body.appendChild(modalOverlay);
 
-		// Close modal logic
 		function closeModal() {
 			document.body.removeChild(modalOverlay);
 		}
@@ -505,15 +513,14 @@
 				closeModal();
 			}
 		});
-
 		document.addEventListener('keydown', (e) => {
 			if (e.key === 'Escape') {
 				closeModal();
 			}
 		});
-
 		closeButton.addEventListener('click', closeModal);
 	}
+
 	//============ Command palette stuff END ============
 
 	//============ Feat snippets START ============

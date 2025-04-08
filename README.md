@@ -36,7 +36,7 @@ Improvements to enhance the Automation Anywhere development platform include an 
 
 ### `userScript.js`
 
-🎥 [Demo Video](https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/f7c6eec2-409f-495d-88e3-028e5b6d4593)
+https://github.com/Jamir-boop/automationanywhere-improvements/assets/73477811/f7c6eec2-409f-495d-88e3-028e5b6d4593
 
 This script enhances Automation Anywhere by adding a command palette (`Alt + P`) that lets you execute helpful developer commands instantly.
 
